@@ -32,9 +32,10 @@ const CreateFutureLetterPage = () => {
     paperColor: "",
     letterContent: "",
     envelopeText: "",
-    shippingDate: "",
     addons: [],
-    futureDeliveryMonths: 1,
+    futureDeliveryDays: 30,
+    deliveryOption: "1-month", // "1-month", "2-month", "custom"
+    customDeliveryDate: "",
     recipient: {
       firstName: "",
       lastName: "",
@@ -147,23 +148,25 @@ const CreateFutureLetterPage = () => {
 
   const totalSteps = 6;
 
-  // Hafta sonu kontrolü
-  const isWeekend = (date) => {
-    const day = date.getDay();
-    return day === 0 || day === 6; // Pazar=0, Cumartesi=6
+  // Teslimat tarihini hesapla
+  const calculateDeliveryDate = () => {
+    const today = new Date();
+    let deliveryDate = new Date(today);
+    
+    if (formData.deliveryOption === "custom" && formData.customDeliveryDate) {
+      return new Date(formData.customDeliveryDate);
+    }
+    
+    deliveryDate.setDate(today.getDate() + formData.futureDeliveryDays);
+    return deliveryDate;
   };
 
-  // Minimum tarih (yarın, hafta sonu değilse)
-  const getMinShippingDate = () => {
-    let date = new Date();
-    date.setDate(date.getDate() + 1); // Yarın
-
-    // Eğer hafta sonuysa, pazartesiye al
-    while (isWeekend(date)) {
-      date.setDate(date.getDate() + 1);
-    }
-
-    return date.toISOString().split("T")[0];
+  // Gün sayısını ay'a çevir
+  const daysToMonthsText = (days) => {
+    if (days === 30) return "1 Ay";
+    if (days === 60) return "2 Ay";
+    if (days % 30 === 0) return `${days / 30} Ay`;
+    return `${days} Gün`;
   };
 
   const handleEnvelopeSelect = (envelopeId) => {
@@ -221,13 +224,14 @@ const CreateFutureLetterPage = () => {
       case 2:
         return formData.paperColor !== "";
       case 3:
-        return (
-          formData.letterContent.trim() !== "" && formData.shippingDate !== ""
-        );
+        return formData.letterContent.trim() !== "";
       case 4:
         return true; // Addons opsiyonel
       case 5:
-        return formData.futureDeliveryMonths > 0;
+        if (formData.deliveryOption === "custom") {
+          return formData.customDeliveryDate !== "";
+        }
+        return formData.futureDeliveryDays > 0;
       case 6:
         return (
           formData.recipient.firstName &&
@@ -481,44 +485,6 @@ const CreateFutureLetterPage = () => {
                     />
                   </div>
                 </div>
-
-                {/* Kargoya Verilme Tarihi */}
-                <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700 p-6">
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                    Kargoya Verilme Tarihi *
-                  </label>
-                  <p className="text-xs text-gray-500 dark:text-gray-400 mb-3">
-                    Mektubun hangi tarihte kargoya verileceğini seç. Hafta
-                    sonları kargoya verilemez.
-                  </p>
-                  <div className="flex items-start space-x-3">
-                    <AlertCircle className="w-5 h-5 text-yellow-600 dark:text-yellow-400 flex-shrink-0 mt-3" />
-                    <div className="flex-1">
-                      <input
-                        type="date"
-                        min={getMinShippingDate()}
-                        value={formData.shippingDate}
-                        onChange={(e) => {
-                          const selectedDate = new Date(e.target.value);
-                          if (isWeekend(selectedDate)) {
-                            alert(
-                              "Hafta sonu kargoya verilemez! Lütfen hafta içi bir gün seçin."
-                            );
-                            return;
-                          }
-                          setFormData({
-                            ...formData,
-                            shippingDate: e.target.value,
-                          });
-                        }}
-                        className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all"
-                      />
-                      <p className="text-xs text-yellow-700 dark:text-yellow-300 mt-2">
-                        ⚠️ Cumartesi ve Pazar günleri kargoya verilemez.
-                      </p>
-                    </div>
-                  </div>
-                </div>
               </div>
             </div>
           )}
@@ -609,8 +575,7 @@ const CreateFutureLetterPage = () => {
                   Ne Zaman Teslim Edilsin?
                 </h2>
                 <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-                  Mektubun kargoya verildikten kaç ay sonra alıcıya teslim
-                  edilmesini istiyorsun?
+                  Mektubun bugünden kaç gün sonra teslim edilmesini istiyorsun?
                 </p>
               </div>
 
@@ -627,60 +592,134 @@ const CreateFutureLetterPage = () => {
                   <div className="space-y-6">
                     <div>
                       <label className="block text-center text-lg font-medium text-gray-700 dark:text-gray-300 mb-4">
-                        Kaç Ay Sonra?
+                        Teslimat Süresi
                       </label>
 
                       {/* Hızlı Seçim Butonları */}
-                      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
-                        {[1, 3, 6, 12].map((months) => (
-                          <button
-                            key={months}
-                            onClick={() =>
-                              setFormData({
-                                ...formData,
-                                futureDeliveryMonths: months,
-                              })
-                            }
-                            className={`py-4 px-6 rounded-xl font-semibold transition-all duration-300 ${
-                              formData.futureDeliveryMonths === months
-                                ? "bg-purple-500 text-white shadow-lg scale-105"
-                                : "bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600"
-                            }`}
-                          >
-                            <div className="text-2xl font-bold">{months}</div>
-                            <div className="text-xs">Ay</div>
-                          </button>
-                        ))}
+                      <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-6">
+                        <button
+                          onClick={() =>
+                            setFormData({
+                              ...formData,
+                              futureDeliveryDays: 30,
+                              deliveryOption: "1-month",
+                              customDeliveryDate: "",
+                            })
+                          }
+                          className={`py-4 px-6 rounded-xl font-semibold transition-all duration-300 ${
+                            formData.deliveryOption === "1-month"
+                              ? "bg-purple-500 text-white shadow-lg scale-105"
+                              : "bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600"
+                          }`}
+                        >
+                          <div className="text-2xl font-bold">1 Ay</div>
+                          <div className="text-xs">30 Gün</div>
+                        </button>
+
+                        <button
+                          onClick={() =>
+                            setFormData({
+                              ...formData,
+                              futureDeliveryDays: 60,
+                              deliveryOption: "2-month",
+                              customDeliveryDate: "",
+                            })
+                          }
+                          className={`py-4 px-6 rounded-xl font-semibold transition-all duration-300 ${
+                            formData.deliveryOption === "2-month"
+                              ? "bg-purple-500 text-white shadow-lg scale-105"
+                              : "bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600"
+                          }`}
+                        >
+                          <div className="text-2xl font-bold">2 Ay</div>
+                          <div className="text-xs">60 Gün</div>
+                        </button>
+
+                        <button
+                          onClick={() =>
+                            setFormData({
+                              ...formData,
+                              deliveryOption: "custom",
+                            })
+                          }
+                          className={`py-4 px-6 rounded-xl font-semibold transition-all duration-300 ${
+                            formData.deliveryOption === "custom"
+                              ? "bg-purple-500 text-white shadow-lg scale-105"
+                              : "bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600"
+                          }`}
+                        >
+                          <div className="text-2xl font-bold">Diğer</div>
+                          <div className="text-xs">Özel Tarih</div>
+                        </button>
                       </div>
 
-                      {/* Özel Ay Seçimi */}
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                          Veya Özel Süre Belirle
-                        </label>
-                        <div className="flex items-center space-x-3">
-                          <input
-                            type="number"
-                            min="1"
-                            max="60"
-                            value={formData.futureDeliveryMonths}
-                            onChange={(e) =>
-                              setFormData({
-                                ...formData,
-                                futureDeliveryMonths:
-                                  parseInt(e.target.value) || 1,
-                              })
-                            }
-                            className="flex-1 px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-center text-2xl font-bold focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
-                          />
-                          <span className="text-gray-600 dark:text-gray-400 font-medium">
-                            Ay Sonra
-                          </span>
+                      {/* Özel Gün Sayısı veya Date Picker */}
+                      {formData.deliveryOption === "custom" && (
+                        <div className="bg-purple-50 dark:bg-purple-900/20 rounded-xl p-4 border border-purple-200 dark:border-purple-800">
+                          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
+                            Gün Sayısı Gir veya Tarih Seç
+                          </label>
+
+                          {/* Gün Sayısı Input */}
+                          <div className="mb-4">
+                            <label className="block text-xs text-gray-600 dark:text-gray-400 mb-2">
+                              Gün Sayısı
+                            </label>
+                            <input
+                              type="number"
+                              min="1"
+                              max="1825"
+                              value={formData.futureDeliveryDays}
+                              onChange={(e) => {
+                                const days = parseInt(e.target.value) || 1;
+                                setFormData({
+                                  ...formData,
+                                  futureDeliveryDays: days,
+                                  customDeliveryDate: "",
+                                });
+                              }}
+                              className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-center text-xl font-bold focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
+                              placeholder="Örn: 45"
+                            />
+                            <p className="text-xs text-gray-500 dark:text-gray-400 mt-1 text-center">
+                              {daysToMonthsText(formData.futureDeliveryDays)} sonra
+                            </p>
+                          </div>
+
+                          <div className="text-center text-sm text-gray-600 dark:text-gray-400 my-3">
+                            - VEYA -
+                          </div>
+
+                          {/* Date Picker */}
+                          <div>
+                            <label className="block text-xs text-gray-600 dark:text-gray-400 mb-2">
+                              Teslimat Tarihi Seç
+                            </label>
+                            <input
+                              type="date"
+                              min={new Date(Date.now() + 86400000)
+                                .toISOString()
+                                .split("T")[0]}
+                              value={formData.customDeliveryDate}
+                              onChange={(e) => {
+                                const selectedDate = new Date(e.target.value);
+                                const today = new Date();
+                                today.setHours(0, 0, 0, 0);
+                                
+                                const diffTime = selectedDate.getTime() - today.getTime();
+                                const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+                                setFormData({
+                                  ...formData,
+                                  customDeliveryDate: e.target.value,
+                                  futureDeliveryDays: diffDays,
+                                });
+                              }}
+                              className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
+                            />
+                          </div>
                         </div>
-                        <p className="text-xs text-gray-500 dark:text-gray-400 mt-2 text-center">
-                          Maksimum 60 ay (5 yıl)
-                        </p>
-                      </div>
+                      )}
                     </div>
 
                     {/* Özet Bilgi */}
@@ -691,22 +730,19 @@ const CreateFutureLetterPage = () => {
                           <p className="font-semibold mb-1">Teslimat Zamanı:</p>
                           <p>
                             Mektubun{" "}
-                            <span className="font-bold">
-                              {formData.shippingDate
-                                ? new Date(
-                                    formData.shippingDate
-                                  ).toLocaleDateString("tr-TR", {
-                                    year: "numeric",
-                                    month: "long",
-                                    day: "numeric",
-                                  })
-                                : "belirlediğin tarihte"}
+                            <span className="font-bold">bugünden itibaren</span>{" "}
+                            <span className="font-bold text-lg">
+                              {formData.futureDeliveryDays} gün sonra
                             </span>{" "}
-                            kargoya verilecek ve{" "}
+                            (
                             <span className="font-bold">
-                              {formData.futureDeliveryMonths} ay sonra
-                            </span>{" "}
-                            alıcıya teslim edilecek.
+                              {calculateDeliveryDate().toLocaleDateString("tr-TR", {
+                                year: "numeric",
+                                month: "long",
+                                day: "numeric",
+                              })}
+                            </span>
+                            ) kargoya verilip teslim edilecek.
                           </p>
                         </div>
                       </div>
