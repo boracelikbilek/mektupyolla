@@ -1,12 +1,12 @@
-import { Routes, Route } from 'react-router-dom'
-import Layout from './components/Layout'
-import HomePage from './pages/HomePage'
-import ContactPage from './pages/ContactPage'
-import BlogPage from './pages/BlogPage'
-import FAQPage from './pages/FAQPage'
-import LoginPage from './pages/LoginPage'
-import RegisterPage from './pages/RegisterPage'
-import ForgotPasswordPage from './pages/ForgotPasswordPage'
+import { Routes, Route } from "react-router-dom";
+import Layout from "./components/Layout";
+import HomePage from "./pages/HomePage";
+import ContactPage from "./pages/ContactPage";
+import BlogPage from "./pages/BlogPage";
+import FAQPage from "./pages/FAQPage";
+import LoginPage from "./pages/LoginPage";
+import RegisterPage from "./pages/RegisterPage";
+import ForgotPasswordPage from "./pages/ForgotPasswordPage";
 
 function App() {
   return (
@@ -21,7 +21,7 @@ function App() {
       <Route path="kayit" element={<RegisterPage />} />
       <Route path="sifremi-unuttum" element={<ForgotPasswordPage />} />
     </Routes>
-  )
+  );
 }
 
-export default App
+export default App;

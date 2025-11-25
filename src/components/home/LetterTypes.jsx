@@ -37,14 +37,14 @@ const letterTypes = [
 
 const LetterTypes = () => {
   return (
-    <section id="mektup-turleri" className="section-padding bg-gray-50">
+    <section id="mektup-turleri" className="section-padding bg-gray-50 dark:bg-gray-900">
       <div className="container-custom">
         <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-4">
             Hangi Mektubu
             <span className="gradient-text block mt-2">Yazmak İstiyorsun?</span>
           </h2>
-          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+          <p className="text-xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
             Her durum için özel kategoriler. Duygularınızı en doğru şekilde ifade edin.
           </p>
         </div>

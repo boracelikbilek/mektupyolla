@@ -1,39 +1,82 @@
-import { useState } from 'react'
-import { Link } from 'react-router-dom'
-import SEO from '../components/SEO'
-import { Mail, Lock, User, Eye, EyeOff } from 'lucide-react'
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import SEO from "../components/SEO";
+import { Mail, Lock, User, Eye, EyeOff, AlertCircle } from "lucide-react";
+import { useAuth } from "../contexts/AuthContext";
 
 const RegisterPage = () => {
-  const [showPassword, setShowPassword] = useState(false)
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false)
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    password: '',
-    confirmPassword: ''
-  })
+    name: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+  });
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+  
+  const { signUp, signInWithGoogle } = useAuth();
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value
-    })
-  }
+      [e.target.name]: e.target.value,
+    });
+  };
 
-  const handleSubmit = (e) => {
-    e.preventDefault()
-    // Registration logic will be implemented later
-    console.log('Registration attempt:', formData)
-  }
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError("");
 
-  const handleGoogleRegister = () => {
-    // Google OAuth logic will be implemented later
-    console.log('Google registration attempt')
-  }
+    if (formData.password !== formData.confirmPassword) {
+      setError("Şifreler eşleşmiyor. Lütfen tekrar deneyin.");
+      return;
+    }
+
+    if (formData.password.length < 6) {
+      setError("Şifre en az 6 karakter olmalıdır.");
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      const { error } = await signUp(formData.email, formData.password, formData.name);
+      
+      if (error) {
+        setError(error.message || "Kayıt oluşturulamadı. Lütfen tekrar deneyin.");
+      } else {
+        navigate("/");
+      }
+    } catch (err) {
+      setError("Bir hata oluştu. Lütfen tekrar deneyin.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleGoogleRegister = async () => {
+    setError("");
+    setLoading(true);
+
+    try {
+      const { error } = await signInWithGoogle();
+      
+      if (error) {
+        setError("Google ile kayıt oluşturulamadı. Lütfen tekrar deneyin.");
+      }
+    } catch (err) {
+      setError("Bir hata oluştu. Lütfen tekrar deneyin.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <>
-      <SEO 
+      <SEO
         title="Kayıt Ol | MektupYolla"
         description="MektupYolla'ya kayıt olun ve sevdiklerinize özel mektuplar göndermeye başlayın."
         canonical="https://mektupyolla.com/kayit"
@@ -43,22 +86,22 @@ const RegisterPage = () => {
         <div className="max-w-md w-full space-y-8">
           {/* Logo */}
           <div className="text-center">
-            <Link to="/" className="inline-flex items-center space-x-2 mb-6">
+            <Link to="/" className="inline-flex items-center justify-center mb-6">
               <img 
                 src="/logo-2.png" 
                 alt="MektupYolla Logo" 
-                className="w-12 h-12 object-contain"
+                className="h-24 w-auto object-contain"
               />
-              <span className="text-3xl font-bold gradient-text">
-                MektupYolla
-              </span>
             </Link>
             <h2 className="text-3xl font-bold text-gray-900 dark:text-white">
               Hesap Oluştur
             </h2>
             <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">
-              Zaten hesabınız var mı?{' '}
-              <Link to="/giris" className="text-primary-600 hover:text-primary-700 font-medium">
+              Zaten hesabınız var mı?{" "}
+              <Link
+                to="/giris"
+                className="text-primary-600 hover:text-primary-700 font-medium"
+              >
                 Giriş Yapın
               </Link>
             </p>
@@ -66,10 +109,20 @@ const RegisterPage = () => {
 
           {/* Register Form */}
           <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8">
+            {error && (
+              <div className="mb-4 p-4 bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-800 rounded-lg flex items-start">
+                <AlertCircle className="h-5 w-5 text-red-600 dark:text-red-400 mt-0.5 mr-2 flex-shrink-0" />
+                <p className="text-sm text-red-800 dark:text-red-300">{error}</p>
+              </div>
+            )}
+            
             <form onSubmit={handleSubmit} className="space-y-6">
               {/* Name Input */}
               <div>
-                <label htmlFor="name" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label
+                  htmlFor="name"
+                  className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                >
                   Ad Soyad
                 </label>
                 <div className="relative">
@@ -91,7 +144,10 @@ const RegisterPage = () => {
 
               {/* Email Input */}
               <div>
-                <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label
+                  htmlFor="email"
+                  className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                >
                   E-posta Adresi
                 </label>
                 <div className="relative">
@@ -113,7 +169,10 @@ const RegisterPage = () => {
 
               {/* Password Input */}
               <div>
-                <label htmlFor="password" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label
+                  htmlFor="password"
+                  className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                >
                   Şifre
                 </label>
                 <div className="relative">
@@ -123,7 +182,7 @@ const RegisterPage = () => {
                   <input
                     id="password"
                     name="password"
-                    type={showPassword ? 'text' : 'password'}
+                    type={showPassword ? "text" : "password"}
                     required
                     value={formData.password}
                     onChange={handleChange}
@@ -146,7 +205,10 @@ const RegisterPage = () => {
 
               {/* Confirm Password Input */}
               <div>
-                <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label
+                  htmlFor="confirmPassword"
+                  className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                >
                   Şifre Tekrar
                 </label>
                 <div className="relative">
@@ -156,7 +218,7 @@ const RegisterPage = () => {
                   <input
                     id="confirmPassword"
                     name="confirmPassword"
-                    type={showConfirmPassword ? 'text' : 'password'}
+                    type={showConfirmPassword ? "text" : "password"}
                     required
                     value={formData.confirmPassword}
                     onChange={handleChange}
@@ -186,24 +248,34 @@ const RegisterPage = () => {
                   required
                   className="h-4 w-4 mt-1 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
                 />
-                <label htmlFor="terms" className="ml-2 block text-sm text-gray-700 dark:text-gray-300">
-                  <Link to="/kullanim-kosullari" className="text-primary-600 hover:text-primary-700">
+                <label
+                  htmlFor="terms"
+                  className="ml-2 block text-sm text-gray-700 dark:text-gray-300"
+                >
+                  <Link
+                    to="/kullanim-kosullari"
+                    className="text-primary-600 hover:text-primary-700"
+                  >
                     Kullanım Koşullarını
-                  </Link>{' '}
-                  ve{' '}
-                  <Link to="/gizlilik-politikasi" className="text-primary-600 hover:text-primary-700">
+                  </Link>{" "}
+                  ve{" "}
+                  <Link
+                    to="/gizlilik-politikasi"
+                    className="text-primary-600 hover:text-primary-700"
+                  >
                     Gizlilik Politikasını
-                  </Link>{' '}
+                  </Link>{" "}
                   okudum ve kabul ediyorum.
                 </label>
               </div>
 
               {/* Submit Button */}
-              <button
+              <button 
                 type="submit"
-                className="w-full btn-primary"
+                disabled={loading}
+                className="w-full btn-primary disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                Kayıt Ol
+                {loading ? "Kayıt yapılıyor..." : "Kayıt Ol"}
               </button>
 
               {/* Divider */}
@@ -222,7 +294,8 @@ const RegisterPage = () => {
               <button
                 type="button"
                 onClick={handleGoogleRegister}
-                className="w-full flex items-center justify-center px-6 py-3 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300 font-medium hover:bg-gray-50 dark:hover:bg-gray-600 transition-all duration-300"
+                disabled={loading}
+                className="w-full flex items-center justify-center px-6 py-3 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300 font-medium hover:bg-gray-50 dark:hover:bg-gray-600 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 <svg className="w-5 h-5 mr-2" viewBox="0 0 24 24">
                   <path
@@ -249,15 +322,18 @@ const RegisterPage = () => {
 
           {/* Login Link */}
           <p className="text-center text-sm text-gray-600 dark:text-gray-400">
-            Zaten hesabınız var mı?{' '}
-            <Link to="/giris" className="font-medium text-primary-600 hover:text-primary-700">
+            Zaten hesabınız var mı?{" "}
+            <Link
+              to="/giris"
+              className="font-medium text-primary-600 hover:text-primary-700"
+            >
               Giriş Yapın
             </Link>
           </p>
         </div>
       </div>
     </>
-  )
-}
+  );
+};
 
-export default RegisterPage
+export default RegisterPage;

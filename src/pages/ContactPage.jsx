@@ -1,23 +1,22 @@
-import SEO from '../components/SEO'
-import { Mail, Phone, MapPin, Clock, Send } from 'lucide-react'
+import SEO from "../components/SEO";
+import { Mail, Phone, MapPin, Clock, Send } from "lucide-react";
 
 const ContactPage = () => {
   return (
     <>
-      <SEO 
+      <SEO
         title="İletişim | MektupYolla"
         description="MektupYolla ile iletişime geçin. Sorularınız için 7/24 müşteri hizmetleri ekibimiz hizmetinizde."
         canonical="https://mektupyolla.com/iletisim"
       />
 
       {/* Hero Section */}
-      <section className="pt-32 pb-16 bg-gradient-to-br from-primary-500 to-primary-700 dark:from-gray-800 dark:to-gray-900">
+      <section className="pt-32 pb-16 bg-gradient-to-br from-primary-400 to-primary-600 dark:from-gray-800 dark:to-gray-900">
         <div className="container-custom text-center text-white">
-          <h1 className="text-4xl md:text-6xl font-bold mb-6">
-            Bize Ulaşın
-          </h1>
+          <h1 className="text-4xl md:text-6xl font-bold mb-6">Bize Ulaşın</h1>
           <p className="text-xl text-white/90 max-w-2xl mx-auto">
-            Sorularınız mı var? 7/24 müşteri hizmetleri ekibimiz size yardımcı olmak için burada.
+            Sorularınız mı var? 7/24 müşteri hizmetleri ekibimiz size yardımcı
+            olmak için burada.
           </p>
         </div>
       </section>
@@ -30,8 +29,13 @@ const ContactPage = () => {
               <div className="w-14 h-14 bg-primary-100 dark:bg-primary-900/30 rounded-xl flex items-center justify-center mx-auto mb-4">
                 <Mail className="w-7 h-7 text-primary-600 dark:text-primary-400" />
               </div>
-              <h3 className="font-bold text-gray-900 dark:text-white mb-2">E-posta</h3>
-              <a href="mailto:info@mektupyolla.com" className="text-primary-600 dark:text-primary-400 hover:underline">
+              <h3 className="font-bold text-gray-900 dark:text-white mb-2">
+                E-posta
+              </h3>
+              <a
+                href="mailto:info@mektupyolla.com"
+                className="text-primary-600 dark:text-primary-400 hover:underline"
+              >
                 info@mektupyolla.com
               </a>
             </div>
@@ -40,8 +44,13 @@ const ContactPage = () => {
               <div className="w-14 h-14 bg-green-100 dark:bg-green-900/30 rounded-xl flex items-center justify-center mx-auto mb-4">
                 <Phone className="w-7 h-7 text-green-600 dark:text-green-400" />
               </div>
-              <h3 className="font-bold text-gray-900 dark:text-white mb-2">Telefon</h3>
-              <a href="tel:+908501234567" className="text-primary-600 dark:text-primary-400 hover:underline">
+              <h3 className="font-bold text-gray-900 dark:text-white mb-2">
+                Telefon
+              </h3>
+              <a
+                href="tel:+908501234567"
+                className="text-primary-600 dark:text-primary-400 hover:underline"
+              >
                 0850 123 45 67
               </a>
             </div>
@@ -50,16 +59,24 @@ const ContactPage = () => {
               <div className="w-14 h-14 bg-blue-100 dark:bg-blue-900/30 rounded-xl flex items-center justify-center mx-auto mb-4">
                 <MapPin className="w-7 h-7 text-blue-600 dark:text-blue-400" />
               </div>
-              <h3 className="font-bold text-gray-900 dark:text-white mb-2">Adres</h3>
-              <p className="text-gray-600 dark:text-gray-400 text-sm">İstanbul, Türkiye</p>
+              <h3 className="font-bold text-gray-900 dark:text-white mb-2">
+                Adres
+              </h3>
+              <p className="text-gray-600 dark:text-gray-400 text-sm">
+                İstanbul, Türkiye
+              </p>
             </div>
 
             <div className="card text-center">
               <div className="w-14 h-14 bg-indigo-100 dark:bg-indigo-900/30 rounded-xl flex items-center justify-center mx-auto mb-4">
                 <Clock className="w-7 h-7 text-indigo-600 dark:text-indigo-400" />
               </div>
-              <h3 className="font-bold text-gray-900 dark:text-white mb-2">Çalışma Saatleri</h3>
-              <p className="text-gray-600 dark:text-gray-400 text-sm">7/24 Aktif</p>
+              <h3 className="font-bold text-gray-900 dark:text-white mb-2">
+                Çalışma Saatleri
+              </h3>
+              <p className="text-gray-600 dark:text-gray-400 text-sm">
+                7/24 Aktif
+              </p>
             </div>
           </div>
 
@@ -128,7 +145,10 @@ const ContactPage = () => {
                   ></textarea>
                 </div>
 
-                <button type="submit" className="btn-primary w-full text-lg group">
+                <button
+                  type="submit"
+                  className="btn-primary w-full text-lg group"
+                >
                   Mesajı Gönder
                   <Send className="inline-block ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
                 </button>
@@ -138,7 +158,7 @@ const ContactPage = () => {
         </div>
       </section>
     </>
-  )
-}
+  );
+};
 
-export default ContactPage
+export default ContactPage;

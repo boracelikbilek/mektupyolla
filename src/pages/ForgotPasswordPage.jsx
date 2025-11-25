@@ -1,22 +1,40 @@
-import { useState } from 'react'
-import { Link } from 'react-router-dom'
-import SEO from '../components/SEO'
-import { Mail, ArrowLeft } from 'lucide-react'
+import { useState } from "react";
+import { Link } from "react-router-dom";
+import SEO from "../components/SEO";
+import { Mail, ArrowLeft, AlertCircle, CheckCircle } from "lucide-react";
+import { useAuth } from "../contexts/AuthContext";
 
 const ForgotPasswordPage = () => {
-  const [email, setEmail] = useState('')
-  const [submitted, setSubmitted] = useState(false)
+  const [email, setEmail] = useState("");
+  const [submitted, setSubmitted] = useState(false);
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+  
+  const { resetPassword } = useAuth();
 
-  const handleSubmit = (e) => {
-    e.preventDefault()
-    // Password reset logic will be implemented later
-    console.log('Password reset request for:', email)
-    setSubmitted(true)
-  }
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError("");
+    setLoading(true);
+
+    try {
+      const { error } = await resetPassword(email);
+      
+      if (error) {
+        setError("Şifre sıfırlama e-postası gönderilemedi. Lütfen e-posta adresinizi kontrol edin.");
+      } else {
+        setSubmitted(true);
+      }
+    } catch (err) {
+      setError("Bir hata oluştu. Lütfen tekrar deneyin.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <>
-      <SEO 
+      <SEO
         title="Şifremi Unuttum | MektupYolla"
         description="MektupYolla hesap şifrenizi sıfırlayın."
         canonical="https://mektupyolla.com/sifremi-unuttum"
@@ -26,31 +44,40 @@ const ForgotPasswordPage = () => {
         <div className="max-w-md w-full space-y-8">
           {/* Logo */}
           <div className="text-center">
-            <Link to="/" className="inline-flex items-center space-x-2 mb-6">
+            <Link to="/" className="inline-flex items-center justify-center mb-6">
               <img 
                 src="/logo-2.png" 
                 alt="MektupYolla Logo" 
-                className="w-12 h-12 object-contain"
+                className="h-24 w-auto object-contain"
               />
-              <span className="text-3xl font-bold gradient-text">
-                MektupYolla
-              </span>
             </Link>
             <h2 className="text-3xl font-bold text-gray-900 dark:text-white">
               Şifremi Unuttum
             </h2>
             <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">
-              E-posta adresinizi girin, size şifre sıfırlama bağlantısı gönderelim.
+              E-posta adresinizi girin, size şifre sıfırlama bağlantısı
+              gönderelim.
             </p>
           </div>
 
           {/* Forgot Password Form */}
           <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8">
             {!submitted ? (
-              <form onSubmit={handleSubmit} className="space-y-6">
+              <>
+                {error && (
+                  <div className="mb-4 p-4 bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-800 rounded-lg flex items-start">
+                    <AlertCircle className="h-5 w-5 text-red-600 dark:text-red-400 mt-0.5 mr-2 flex-shrink-0" />
+                    <p className="text-sm text-red-800 dark:text-red-300">{error}</p>
+                  </div>
+                )}
+                
+                <form onSubmit={handleSubmit} className="space-y-6">
                 {/* Email Input */}
                 <div>
-                  <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  <label
+                    htmlFor="email"
+                    className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                  >
                     E-posta Adresi
                   </label>
                   <div className="relative">
@@ -71,22 +98,24 @@ const ForgotPasswordPage = () => {
                 </div>
 
                 {/* Submit Button */}
-                <button
+                <button 
                   type="submit"
-                  className="w-full btn-primary"
+                  disabled={loading}
+                  className="w-full btn-primary disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  Şifre Sıfırlama Bağlantısı Gönder
+                  {loading ? "Gönderiliyor..." : "Şifre Sıfırlama Bağlantısı Gönder"}
                 </button>
 
                 {/* Back to Login */}
-                <Link 
-                  to="/giris" 
+                <Link
+                  to="/giris"
                   className="flex items-center justify-center text-sm text-primary-600 hover:text-primary-700 font-medium"
                 >
                   <ArrowLeft className="w-4 h-4 mr-2" />
                   Giriş Sayfasına Dön
                 </Link>
               </form>
+              </>
             ) : (
               <div className="text-center space-y-4">
                 <div className="w-16 h-16 bg-green-100 dark:bg-green-900 rounded-full flex items-center justify-center mx-auto">
@@ -96,14 +125,14 @@ const ForgotPasswordPage = () => {
                   E-posta Gönderildi!
                 </h3>
                 <p className="text-gray-600 dark:text-gray-400">
-                  <strong>{email}</strong> adresine şifre sıfırlama bağlantısı gönderdik. 
-                  Lütfen e-posta kutunuzu kontrol edin.
+                  <strong>{email}</strong> adresine şifre sıfırlama bağlantısı
+                  gönderdik. Lütfen e-posta kutunuzu kontrol edin.
                 </p>
                 <p className="text-sm text-gray-500 dark:text-gray-500">
                   E-postayı görmüyorsanız, spam klasörünü kontrol edin.
                 </p>
-                <Link 
-                  to="/giris" 
+                <Link
+                  to="/giris"
                   className="inline-flex items-center justify-center text-sm text-primary-600 hover:text-primary-700 font-medium mt-4"
                 >
                   <ArrowLeft className="w-4 h-4 mr-2" />
@@ -116,8 +145,11 @@ const ForgotPasswordPage = () => {
           {/* Sign Up Link */}
           {!submitted && (
             <p className="text-center text-sm text-gray-600 dark:text-gray-400">
-              Hesabınız yok mu?{' '}
-              <Link to="/kayit" className="font-medium text-primary-600 hover:text-primary-700">
+              Hesabınız yok mu?{" "}
+              <Link
+                to="/kayit"
+                className="font-medium text-primary-600 hover:text-primary-700"
+              >
                 Hemen Kayıt Olun
               </Link>
             </p>
@@ -125,7 +157,7 @@ const ForgotPasswordPage = () => {
         </div>
       </div>
     </>
-  )
-}
+  );
+};
 
-export default ForgotPasswordPage
+export default ForgotPasswordPage;

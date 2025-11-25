@@ -1,27 +1,59 @@
-import { useState } from 'react'
-import { Link } from 'react-router-dom'
-import SEO from '../components/SEO'
-import { Mail, Lock, Eye, EyeOff } from 'lucide-react'
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import SEO from "../components/SEO";
+import { Mail, Lock, Eye, EyeOff, AlertCircle } from "lucide-react";
+import { useAuth } from "../contexts/AuthContext";
 
 const LoginPage = () => {
-  const [showPassword, setShowPassword] = useState(false)
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
+  const [showPassword, setShowPassword] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+  
+  const { signIn, signInWithGoogle } = useAuth();
+  const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
-    e.preventDefault()
-    // Login logic will be implemented later
-    console.log('Login attempt:', { email, password })
-  }
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError("");
+    setLoading(true);
 
-  const handleGoogleLogin = () => {
-    // Google OAuth logic will be implemented later
-    console.log('Google login attempt')
-  }
+    try {
+      const { error } = await signIn(email, password);
+      
+      if (error) {
+        setError("E-posta veya şifre hatalı. Lütfen tekrar deneyin.");
+      } else {
+        navigate("/");
+      }
+    } catch (err) {
+      setError("Bir hata oluştu. Lütfen tekrar deneyin.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleGoogleLogin = async () => {
+    setError("");
+    setLoading(true);
+
+    try {
+      const { error } = await signInWithGoogle();
+      
+      if (error) {
+        setError("Google ile giriş yapılamadı. Lütfen tekrar deneyin.");
+      }
+    } catch (err) {
+      setError("Bir hata oluştu. Lütfen tekrar deneyin.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <>
-      <SEO 
+      <SEO
         title="Giriş Yap | MektupYolla"
         description="MektupYolla hesabınıza giriş yapın ve sevdiklerinize özel mektuplar gönderin."
         canonical="https://mektupyolla.com/giris"
@@ -31,22 +63,22 @@ const LoginPage = () => {
         <div className="max-w-md w-full space-y-8">
           {/* Logo */}
           <div className="text-center">
-            <Link to="/" className="inline-flex items-center space-x-2 mb-6">
+            <Link to="/" className="inline-flex items-center justify-center mb-6">
               <img 
                 src="/logo-2.png" 
                 alt="MektupYolla Logo" 
-                className="w-12 h-12 object-contain"
+                className="h-24 w-auto object-contain"
               />
-              <span className="text-3xl font-bold gradient-text">
-                MektupYolla
-              </span>
             </Link>
             <h2 className="text-3xl font-bold text-gray-900 dark:text-white">
               Hoş Geldiniz
             </h2>
             <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">
-              Hesabınıza giriş yapın veya{' '}
-              <Link to="/kayit" className="text-primary-600 hover:text-primary-700 font-medium">
+              Hesabınıza giriş yapın veya{" "}
+              <Link
+                to="/kayit"
+                className="text-primary-600 hover:text-primary-700 font-medium"
+              >
                 yeni hesap oluşturun
               </Link>
             </p>
@@ -54,10 +86,20 @@ const LoginPage = () => {
 
           {/* Login Form */}
           <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8">
+            {error && (
+              <div className="mb-4 p-4 bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-800 rounded-lg flex items-start">
+                <AlertCircle className="h-5 w-5 text-red-600 dark:text-red-400 mt-0.5 mr-2 flex-shrink-0" />
+                <p className="text-sm text-red-800 dark:text-red-300">{error}</p>
+              </div>
+            )}
+            
             <form onSubmit={handleSubmit} className="space-y-6">
               {/* Email Input */}
               <div>
-                <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label
+                  htmlFor="email"
+                  className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                >
                   E-posta Adresi
                 </label>
                 <div className="relative">
@@ -79,7 +121,10 @@ const LoginPage = () => {
 
               {/* Password Input */}
               <div>
-                <label htmlFor="password" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label
+                  htmlFor="password"
+                  className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                >
                   Şifre
                 </label>
                 <div className="relative">
@@ -89,7 +134,7 @@ const LoginPage = () => {
                   <input
                     id="password"
                     name="password"
-                    type={showPassword ? 'text' : 'password'}
+                    type={showPassword ? "text" : "password"}
                     required
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
@@ -119,22 +164,29 @@ const LoginPage = () => {
                     type="checkbox"
                     className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
                   />
-                  <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-700 dark:text-gray-300">
+                  <label
+                    htmlFor="remember-me"
+                    className="ml-2 block text-sm text-gray-700 dark:text-gray-300"
+                  >
                     Beni Hatırla
                   </label>
                 </div>
 
-                <Link to="/sifremi-unuttum" className="text-sm font-medium text-primary-600 hover:text-primary-700">
+                <Link
+                  to="/sifremi-unuttum"
+                  className="text-sm font-medium text-primary-600 hover:text-primary-700"
+                >
                   Şifremi Unuttum?
                 </Link>
               </div>
 
               {/* Submit Button */}
-              <button
-                type="submit"
-                className="w-full btn-primary"
+              <button 
+                type="submit" 
+                disabled={loading}
+                className="w-full btn-primary disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                Giriş Yap
+                {loading ? "Giriş yapılıyor..." : "Giriş Yap"}
               </button>
 
               {/* Divider */}
@@ -153,7 +205,8 @@ const LoginPage = () => {
               <button
                 type="button"
                 onClick={handleGoogleLogin}
-                className="w-full flex items-center justify-center px-6 py-3 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300 font-medium hover:bg-gray-50 dark:hover:bg-gray-600 transition-all duration-300"
+                disabled={loading}
+                className="w-full flex items-center justify-center px-6 py-3 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300 font-medium hover:bg-gray-50 dark:hover:bg-gray-600 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 <svg className="w-5 h-5 mr-2" viewBox="0 0 24 24">
                   <path
@@ -180,15 +233,18 @@ const LoginPage = () => {
 
           {/* Sign Up Link */}
           <p className="text-center text-sm text-gray-600 dark:text-gray-400">
-            Hesabınız yok mu?{' '}
-            <Link to="/kayit" className="font-medium text-primary-600 hover:text-primary-700">
+            Hesabınız yok mu?{" "}
+            <Link
+              to="/kayit"
+              className="font-medium text-primary-600 hover:text-primary-700"
+            >
               Hemen Kayıt Olun
             </Link>
           </p>
         </div>
       </div>
     </>
-  )
-}
+  );
+};
 
-export default LoginPage
+export default LoginPage;

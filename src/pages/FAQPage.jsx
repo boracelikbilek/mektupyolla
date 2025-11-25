@@ -1,90 +1,104 @@
-import { useState } from 'react'
-import SEO from '../components/SEO'
-import { Plus, Minus } from 'lucide-react'
+import { useState } from "react";
+import SEO from "../components/SEO";
+import { Plus, Minus } from "lucide-react";
 
 const faqs = [
   {
-    category: 'Genel',
+    category: "Genel",
     questions: [
       {
-        question: 'MektupYolla nedir?',
-        answer: 'MektupYolla, sevdiklerinize online olarak mektup yazıp, fiziksel olarak adreslerine teslim edilmesini sağlayan Türkiye\'nin ilk dijital mektup servisidir. Modern teknoloji ile geleneksel mektup kültürünü birleştiriyoruz.'
+        question: "MektupYolla nedir?",
+        answer:
+          "MektupYolla, sevdiklerinize online olarak mektup yazıp, fiziksel olarak adreslerine teslim edilmesini sağlayan Türkiye'nin ilk dijital mektup servisidir. Modern teknoloji ile geleneksel mektup kültürünü birleştiriyoruz.",
       },
       {
-        question: 'Nasıl çalışır?',
-        answer: 'Çok basit! Web sitemizden mektubunuzu yazın, alıcı adresini belirtin ve ödeme yapın. Biz mektubunuzu premium kağıda basıp, özenle zarflayarak kargo ile adresine teslim ediyoruz.'
+        question: "Nasıl çalışır?",
+        answer:
+          "Çok basit! Web sitemizden mektubunuzu yazın, alıcı adresini belirtin ve ödeme yapın. Biz mektubunuzu premium kağıda basıp, özenle zarflayarak kargo ile adresine teslim ediyoruz.",
       },
       {
-        question: 'Mektup ne kadar sürede ulaşır?',
-        answer: 'Kargo süresi genellikle 2-5 iş günüdür. Siparişiniz onaylandıktan sonra, kargo takip numaranızı SMS ile size göndeririz.'
-      }
-    ]
+        question: "Mektup ne kadar sürede ulaşır?",
+        answer:
+          "Kargo süresi genellikle 2-5 iş günüdür. Siparişiniz onaylandıktan sonra, kargo takip numaranızı SMS ile size göndeririz.",
+      },
+    ],
   },
   {
-    category: 'Fiyatlandırma',
+    category: "Fiyatlandırma",
     questions: [
       {
-        question: 'Mektup göndermek ne kadar?',
-        answer: 'Fiyatlarımız mektup türüne, sayfa sayısına ve özel seçeneklere göre değişmektedir. Standart bir mektup 50 TL\'den başlayan fiyatlarla gönderebilirsiniz. İlk mektubunuz bizden hediye!'
+        question: "Mektup göndermek ne kadar?",
+        answer:
+          "Fiyatlarımız mektup türüne, sayfa sayısına ve özel seçeneklere göre değişmektedir. Standart bir mektup 50 TL'den başlayan fiyatlarla gönderebilirsiniz. İlk mektubunuz bizden hediye!",
       },
       {
-        question: 'Ödeme yöntemleri nelerdir?',
-        answer: 'Kredi kartı, banka kartı ve havale/EFT ile ödeme yapabilirsiniz. Tüm ödemeleriniz 3D Secure güvencesi altındadır.'
+        question: "Ödeme yöntemleri nelerdir?",
+        answer:
+          "Kredi kartı, banka kartı ve havale/EFT ile ödeme yapabilirsiniz. Tüm ödemeleriniz 3D Secure güvencesi altındadır.",
       },
       {
-        question: 'İptal ve iade politikanız nedir?',
-        answer: 'Mektubunuz baskıya gönderilmeden önce (yaklaşık 2 saat içinde) siparişinizi ücretsiz iptal edebilirsiniz. Baskıya gönderildikten sonra iptal işlemi yapılamamaktadır.'
-      }
-    ]
+        question: "İptal ve iade politikanız nedir?",
+        answer:
+          "Mektubunuz baskıya gönderilmeden önce (yaklaşık 2 saat içinde) siparişinizi ücretsiz iptal edebilirsiniz. Baskıya gönderildikten sonra iptal işlemi yapılamamaktadır.",
+      },
+    ],
   },
   {
-    category: 'Özelleştirme',
+    category: "Özelleştirme",
     questions: [
       {
-        question: 'Mektubumu özelleştirebilir miyim?',
-        answer: 'Evet! Farklı yazı tipleri, renkli çıktı, özel kağıt seçenekleri, zarf türleri ve fotoğraf ekleme gibi birçok özelleştirme seçeneği sunuyoruz.'
+        question: "Mektubumu özelleştirebilir miyim?",
+        answer:
+          "Evet! Farklı yazı tipleri, renkli çıktı, özel kağıt seçenekleri, zarf türleri ve fotoğraf ekleme gibi birçok özelleştirme seçeneği sunuyoruz.",
       },
       {
-        question: 'Emoji kullanabilir miyim?',
-        answer: 'Elbette! Mektubunuzda emoji kullanabilir ve renkli olarak basılmasını sağlayabilirsiniz.'
+        question: "Emoji kullanabilir miyim?",
+        answer:
+          "Elbette! Mektubunuzda emoji kullanabilir ve renkli olarak basılmasını sağlayabilirsiniz.",
       },
       {
-        question: 'Fotoğraf ekleyebilir miyim?',
-        answer: 'Evet, mektubunuza fotoğraf ekleyebilirsiniz. Fotoğraflar yüksek kalitede basılır ve mektubunuzla birlikte gönderilir.'
-      }
-    ]
+        question: "Fotoğraf ekleyebilir miyim?",
+        answer:
+          "Evet, mektubunuza fotoğraf ekleyebilirsiniz. Fotoğraflar yüksek kalitede basılır ve mektubunuzla birlikte gönderilir.",
+      },
+    ],
   },
   {
-    category: 'Güvenlik',
+    category: "Güvenlik",
     questions: [
       {
-        question: 'Bilgilerim güvende mi?',
-        answer: 'Kesinlikle! Tüm kişisel bilgileriniz ve mektup içerikleriniz SSL sertifikası ile şifrelenir ve gizli tutulur. Üçüncü şahıslarla asla paylaşılmaz.'
+        question: "Bilgilerim güvende mi?",
+        answer:
+          "Kesinlikle! Tüm kişisel bilgileriniz ve mektup içerikleriniz SSL sertifikası ile şifrelenir ve gizli tutulur. Üçüncü şahıslarla asla paylaşılmaz.",
       },
       {
-        question: 'Mektuplarım arşivlenir mi?',
-        answer: 'Evet, gönderdiğiniz tüm mektuplar dijital arşivinizde güvenle saklanır. İstediğiniz zaman erişebilir veya silebilirsiniz.'
-      }
-    ]
+        question: "Mektuplarım arşivlenir mi?",
+        answer:
+          "Evet, gönderdiğiniz tüm mektuplar dijital arşivinizde güvenle saklanır. İstediğiniz zaman erişebilir veya silebilirsiniz.",
+      },
+    ],
   },
   {
-    category: 'Teslimat',
+    category: "Teslimat",
     questions: [
       {
-        question: 'Hangi bölgelere gönderim yapıyorsunuz?',
-        answer: 'Türkiye\'nin her yerine gönderim yapıyoruz. Askeri bölgeler ve cezaevleri için özel prosedürler uygulanmaktadır.'
+        question: "Hangi bölgelere gönderim yapıyorsunuz?",
+        answer:
+          "Türkiye'nin her yerine gönderim yapıyoruz. Askeri bölgeler ve cezaevleri için özel prosedürler uygulanmaktadır.",
       },
       {
-        question: 'Kargo takibi yapabilir miyim?',
-        answer: 'Evet, mektubunuz kargoya verildiğinde size SMS ile takip numarası gönderilir. Bu numara ile kargo durumunu takip edebilirsiniz.'
+        question: "Kargo takibi yapabilir miyim?",
+        answer:
+          "Evet, mektubunuz kargoya verildiğinde size SMS ile takip numarası gönderilir. Bu numara ile kargo durumunu takip edebilirsiniz.",
       },
       {
-        question: 'Mektup teslim edilmezse ne olur?',
-        answer: 'Eğer mektubunuz yanlış adres, alıcı bulunamadı gibi sebeplerle teslim edilemezse, durumu size bildiririz ve ücreti iade ederiz.'
-      }
-    ]
-  }
-]
+        question: "Mektup teslim edilmezse ne olur?",
+        answer:
+          "Eğer mektubunuz yanlış adres, alıcı bulunamadı gibi sebeplerle teslim edilemezse, durumu size bildiririz ve ücreti iade ederiz.",
+      },
+    ],
+  },
+];
 
 const FAQItem = ({ question, answer, isOpen, onClick }) => {
   return (
@@ -93,7 +107,9 @@ const FAQItem = ({ question, answer, isOpen, onClick }) => {
         onClick={onClick}
         className="w-full flex items-center justify-between py-5 text-left hover:text-primary-600 dark:hover:text-primary-400 transition-colors"
       >
-        <span className="font-semibold text-gray-900 dark:text-white pr-8">{question}</span>
+        <span className="font-semibold text-gray-900 dark:text-white pr-8">
+          {question}
+        </span>
         <div className="flex-shrink-0">
           {isOpen ? (
             <Minus className="w-5 h-5 text-primary-600 dark:text-primary-400" />
@@ -102,43 +118,46 @@ const FAQItem = ({ question, answer, isOpen, onClick }) => {
           )}
         </div>
       </button>
-      
+
       {isOpen && (
         <div className="pb-5 pr-12">
-          <p className="text-gray-600 dark:text-gray-400 leading-relaxed">{answer}</p>
+          <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
+            {answer}
+          </p>
         </div>
       )}
     </div>
-  )
-}
+  );
+};
 
 const FAQPage = () => {
-  const [openItems, setOpenItems] = useState({})
+  const [openItems, setOpenItems] = useState({});
 
   const toggleItem = (category, index) => {
-    const key = `${category}-${index}`
-    setOpenItems(prev => ({
+    const key = `${category}-${index}`;
+    setOpenItems((prev) => ({
       ...prev,
-      [key]: !prev[key]
-    }))
-  }
+      [key]: !prev[key],
+    }));
+  };
 
   return (
     <>
-      <SEO 
+      <SEO
         title="Sıkça Sorulan Sorular | MektupYolla"
         description="MektupYolla hakkında merak ettiğiniz her şey. Fiyatlandırma, teslimat, özelleştirme ve daha fazlası."
         canonical="https://mektupyolla.com/sss"
       />
 
       {/* Hero Section */}
-      <section className="pt-32 pb-16 bg-gradient-to-br from-primary-500 to-primary-700 dark:from-gray-800 dark:to-gray-900">
+      <section className="pt-32 pb-16 bg-gradient-to-br from-primary-400 to-primary-600 dark:from-gray-800 dark:to-gray-900">
         <div className="container-custom text-center text-white">
           <h1 className="text-4xl md:text-6xl font-bold mb-6">
             Sıkça Sorulan Sorular
           </h1>
           <p className="text-xl text-white/90 max-w-2xl mx-auto">
-            Merak ettiğiniz her şey burada. Aradığınızı bulamadıysanız bize ulaşın!
+            Merak ettiğiniz her şey burada. Aradığınızı bulamadıysanız bize
+            ulaşın!
           </p>
         </div>
       </section>
@@ -177,14 +196,12 @@ const FAQPage = () => {
             <p className="text-gray-600 dark:text-gray-400 mb-6">
               7/24 müşteri hizmetleri ekibimiz size yardımcı olmak için burada
             </p>
-            <button className="btn-primary">
-              Bize Ulaşın
-            </button>
+            <button className="btn-primary">Bize Ulaşın</button>
           </div>
         </div>
       </section>
     </>
-  )
-}
+  );
+};
 
-export default FAQPage
+export default FAQPage;
