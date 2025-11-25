@@ -32,7 +32,10 @@ const HowItWorks = () => {
   const navigate = useNavigate();
 
   return (
-    <section id="nasil-calisir" className="section-padding bg-white dark:bg-gray-900">
+    <section
+      id="nasil-calisir"
+      className="section-padding bg-white dark:bg-gray-900"
+    >
       <div className="container-custom">
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-4">

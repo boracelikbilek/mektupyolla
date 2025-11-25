@@ -1,35 +1,37 @@
-import { createContext, useContext, useEffect, useState } from 'react'
-import { supabase } from '../lib/supabase'
+import { createContext, useContext, useEffect, useState } from "react";
+import { supabase } from "../lib/supabase";
 
-const AuthContext = createContext()
+const AuthContext = createContext();
 
 export const useAuth = () => {
-  const context = useContext(AuthContext)
+  const context = useContext(AuthContext);
   if (!context) {
-    throw new Error('useAuth must be used within an AuthProvider')
+    throw new Error("useAuth must be used within an AuthProvider");
   }
-  return context
-}
+  return context;
+};
 
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null)
-  const [loading, setLoading] = useState(true)
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     // Check active sessions and sets the user
     supabase.auth.getSession().then(({ data: { session } }) => {
-      setUser(session?.user ?? null)
-      setLoading(false)
-    })
+      setUser(session?.user ?? null);
+      setLoading(false);
+    });
 
     // Listen for changes on auth state (sign in, sign out, etc.)
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-      setUser(session?.user ?? null)
-      setLoading(false)
-    })
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user ?? null);
+      setLoading(false);
+    });
 
-    return () => subscription.unsubscribe()
-  }, [])
+    return () => subscription.unsubscribe();
+  }, []);
 
   // Sign up with email and password
   const signUp = async (email, password, fullName) => {
@@ -40,16 +42,16 @@ export const AuthProvider = ({ children }) => {
         options: {
           data: {
             full_name: fullName,
-          }
-        }
-      })
-      
-      if (error) throw error
-      return { data, error: null }
+          },
+        },
+      });
+
+      if (error) throw error;
+      return { data, error: null };
     } catch (error) {
-      return { data: null, error }
+      return { data: null, error };
     }
-  }
+  };
 
   // Sign in with email and password
   const signIn = async (email, password) => {
@@ -57,56 +59,56 @@ export const AuthProvider = ({ children }) => {
       const { data, error } = await supabase.auth.signInWithPassword({
         email,
         password,
-      })
-      
-      if (error) throw error
-      return { data, error: null }
+      });
+
+      if (error) throw error;
+      return { data, error: null };
     } catch (error) {
-      return { data: null, error }
+      return { data: null, error };
     }
-  }
+  };
 
   // Sign in with Google
   const signInWithGoogle = async () => {
     try {
       const { data, error } = await supabase.auth.signInWithOAuth({
-        provider: 'google',
+        provider: "google",
         options: {
-          redirectTo: `${window.location.origin}/`
-        }
-      })
-      
-      if (error) throw error
-      return { data, error: null }
+          redirectTo: `${window.location.origin}/`,
+        },
+      });
+
+      if (error) throw error;
+      return { data, error: null };
     } catch (error) {
-      return { data: null, error }
+      return { data: null, error };
     }
-  }
+  };
 
   // Sign out
   const signOut = async () => {
     try {
-      const { error } = await supabase.auth.signOut()
-      if (error) throw error
-      return { error: null }
+      const { error } = await supabase.auth.signOut();
+      if (error) throw error;
+      return { error: null };
     } catch (error) {
-      return { error }
+      return { error };
     }
-  }
+  };
 
   // Reset password
   const resetPassword = async (email) => {
     try {
       const { data, error } = await supabase.auth.resetPasswordForEmail(email, {
         redirectTo: `${window.location.origin}/reset-password`,
-      })
-      
-      if (error) throw error
-      return { data, error: null }
+      });
+
+      if (error) throw error;
+      return { data, error: null };
     } catch (error) {
-      return { data: null, error }
+      return { data: null, error };
     }
-  }
+  };
 
   const value = {
     user,
@@ -116,11 +118,11 @@ export const AuthProvider = ({ children }) => {
     signInWithGoogle,
     signOut,
     resetPassword,
-  }
+  };
 
   return (
     <AuthContext.Provider value={value}>
       {!loading && children}
     </AuthContext.Provider>
-  )
-}
+  );
+};

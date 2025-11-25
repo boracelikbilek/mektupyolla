@@ -9,7 +9,7 @@ const ForgotPasswordPage = () => {
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  
+
   const { resetPassword } = useAuth();
 
   const handleSubmit = async (e) => {
@@ -19,9 +19,11 @@ const ForgotPasswordPage = () => {
 
     try {
       const { error } = await resetPassword(email);
-      
+
       if (error) {
-        setError("Şifre sıfırlama e-postası gönderilemedi. Lütfen e-posta adresinizi kontrol edin.");
+        setError(
+          "Şifre sıfırlama e-postası gönderilemedi. Lütfen e-posta adresinizi kontrol edin."
+        );
       } else {
         setSubmitted(true);
       }
@@ -44,10 +46,13 @@ const ForgotPasswordPage = () => {
         <div className="max-w-md w-full space-y-8">
           {/* Logo */}
           <div className="text-center">
-            <Link to="/" className="inline-flex items-center justify-center mb-6">
-              <img 
-                src="/logo-2.png" 
-                alt="MektupYolla Logo" 
+            <Link
+              to="/"
+              className="inline-flex items-center justify-center mb-6"
+            >
+              <img
+                src="/logo-2.png"
+                alt="MektupYolla Logo"
                 className="h-24 w-auto object-contain"
               />
             </Link>
@@ -67,54 +72,58 @@ const ForgotPasswordPage = () => {
                 {error && (
                   <div className="mb-4 p-4 bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-800 rounded-lg flex items-start">
                     <AlertCircle className="h-5 w-5 text-red-600 dark:text-red-400 mt-0.5 mr-2 flex-shrink-0" />
-                    <p className="text-sm text-red-800 dark:text-red-300">{error}</p>
+                    <p className="text-sm text-red-800 dark:text-red-300">
+                      {error}
+                    </p>
                   </div>
                 )}
-                
+
                 <form onSubmit={handleSubmit} className="space-y-6">
-                {/* Email Input */}
-                <div>
-                  <label
-                    htmlFor="email"
-                    className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
-                  >
-                    E-posta Adresi
-                  </label>
-                  <div className="relative">
-                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                      <Mail className="h-5 w-5 text-gray-400" />
+                  {/* Email Input */}
+                  <div>
+                    <label
+                      htmlFor="email"
+                      className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                    >
+                      E-posta Adresi
+                    </label>
+                    <div className="relative">
+                      <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <Mail className="h-5 w-5 text-gray-400" />
+                      </div>
+                      <input
+                        id="email"
+                        name="email"
+                        type="email"
+                        required
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        className="block w-full pl-10 pr-3 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent dark:bg-gray-700 dark:text-white outline-none transition"
+                        placeholder="ornek@email.com"
+                      />
                     </div>
-                    <input
-                      id="email"
-                      name="email"
-                      type="email"
-                      required
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      className="block w-full pl-10 pr-3 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent dark:bg-gray-700 dark:text-white outline-none transition"
-                      placeholder="ornek@email.com"
-                    />
                   </div>
-                </div>
 
-                {/* Submit Button */}
-                <button 
-                  type="submit"
-                  disabled={loading}
-                  className="w-full btn-primary disabled:opacity-50 disabled:cursor-not-allowed"
-                >
-                  {loading ? "Gönderiliyor..." : "Şifre Sıfırlama Bağlantısı Gönder"}
-                </button>
+                  {/* Submit Button */}
+                  <button
+                    type="submit"
+                    disabled={loading}
+                    className="w-full btn-primary disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    {loading
+                      ? "Gönderiliyor..."
+                      : "Şifre Sıfırlama Bağlantısı Gönder"}
+                  </button>
 
-                {/* Back to Login */}
-                <Link
-                  to="/giris"
-                  className="flex items-center justify-center text-sm text-primary-600 hover:text-primary-700 font-medium"
-                >
-                  <ArrowLeft className="w-4 h-4 mr-2" />
-                  Giriş Sayfasına Dön
-                </Link>
-              </form>
+                  {/* Back to Login */}
+                  <Link
+                    to="/giris"
+                    className="flex items-center justify-center text-sm text-primary-600 hover:text-primary-700 font-medium"
+                  >
+                    <ArrowLeft className="w-4 h-4 mr-2" />
+                    Giriş Sayfasına Dön
+                  </Link>
+                </form>
               </>
             ) : (
               <div className="text-center space-y-4">

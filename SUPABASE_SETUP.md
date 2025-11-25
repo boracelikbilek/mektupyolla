@@ -5,12 +5,15 @@
 ### 1. Supabase Kurulumu
 
 #### Adım 1: Supabase Package'ini Yükleyin
+
 Terminalde şu komutu çalıştırın:
+
 ```bash
 npm install @supabase/supabase-js
 ```
 
 #### Adım 2: Supabase Projesi Oluşturun
+
 1. https://supabase.com adresine gidin
 2. "Start your project" butonuna tıklayın
 3. GitHub hesabınızla giriş yapın
@@ -22,12 +25,14 @@ npm install @supabase/supabase-js
    - Pricing Plan: `Free` (Başlangıç için yeterli)
 
 #### Adım 3: API Keys'i Alın
+
 1. Proje oluşturulduktan sonra, sol menüden "Settings" > "API" bölümüne gidin
 2. Şu bilgileri kopyalayın:
    - `Project URL` (VITE_SUPABASE_URL)
    - `anon/public` key (VITE_SUPABASE_ANON_KEY)
 
 #### Adım 4: .env Dosyası Oluşturun
+
 Proje kök dizininde `.env` dosyası oluşturun ve şu bilgileri ekleyin:
 
 ```env
@@ -40,11 +45,13 @@ VITE_SUPABASE_ANON_KEY=your_supabase_anon_key_here
 ### 2. Supabase Authentication Ayarları
 
 #### Adım 1: Email Authentication'ı Etkinleştirin
+
 1. Supabase Dashboard'da "Authentication" > "Providers" bölümüne gidin
 2. "Email" provider'ı etkinleştirin
 3. "Enable email confirmations" seçeneğini açın/kapalı tutun (tercihinize göre)
 
 #### Adım 2: Google OAuth Ayarlayın
+
 1. [Google Cloud Console](https://console.cloud.google.com/) adresine gidin
 2. Yeni bir proje oluşturun veya mevcut projeyi seçin
 3. "APIs & Services" > "Credentials" bölümüne gidin
@@ -63,6 +70,7 @@ VITE_SUPABASE_ANON_KEY=your_supabase_anon_key_here
 12. Save butonuna tıklayın
 
 #### Adım 3: URL Configuration
+
 1. "Authentication" > "URL Configuration" bölümüne gidin
 2. "Site URL" olarak production URL'inizi ekleyin (örn: https://mektupyolla.com)
 3. "Redirect URLs" kısmına şu URL'leri ekleyin:
@@ -88,12 +96,12 @@ CREATE TABLE profiles (
 -- RLS (Row Level Security) politikaları
 ALTER TABLE profiles ENABLE ROW LEVEL SECURITY;
 
-CREATE POLICY "Users can view own profile" 
-  ON profiles FOR SELECT 
+CREATE POLICY "Users can view own profile"
+  ON profiles FOR SELECT
   USING (auth.uid() = id);
 
-CREATE POLICY "Users can update own profile" 
-  ON profiles FOR UPDATE 
+CREATE POLICY "Users can update own profile"
+  ON profiles FOR UPDATE
   USING (auth.uid() = id);
 
 -- Yeni kullanıcı kaydında otomatik profil oluşturma
@@ -125,37 +133,40 @@ CREATE TABLE letters (
 
 ALTER TABLE letters ENABLE ROW LEVEL SECURITY;
 
-CREATE POLICY "Users can view own letters" 
-  ON letters FOR SELECT 
+CREATE POLICY "Users can view own letters"
+  ON letters FOR SELECT
   USING (auth.uid() = user_id);
 
-CREATE POLICY "Users can insert own letters" 
-  ON letters FOR INSERT 
+CREATE POLICY "Users can insert own letters"
+  ON letters FOR INSERT
   WITH CHECK (auth.uid() = user_id);
 
-CREATE POLICY "Users can update own letters" 
-  ON letters FOR UPDATE 
+CREATE POLICY "Users can update own letters"
+  ON letters FOR UPDATE
   USING (auth.uid() = user_id);
 
-CREATE POLICY "Users can delete own letters" 
-  ON letters FOR DELETE 
+CREATE POLICY "Users can delete own letters"
+  ON letters FOR DELETE
   USING (auth.uid() = user_id);
 ```
 
 ## ✅ Yapılan Değişiklikler
 
 ### Oluşturulan Dosyalar:
+
 - ✅ `/src/lib/supabase.js` - Supabase client konfigürasyonu
 - ✅ `/src/contexts/AuthContext.jsx` - Authentication context ve hooks
 - ✅ `/.env.example` - Environment variables şablonu
 
 ### Güncellenen Dosyalar:
+
 - ✅ `/src/pages/LoginPage.jsx` - Supabase login entegrasyonu
 - ✅ `/src/pages/RegisterPage.jsx` - Supabase register entegrasyonu
 - ✅ `/src/pages/ForgotPasswordPage.jsx` - Şifre sıfırlama entegrasyonu
 - ✅ `/src/main.jsx` - AuthProvider eklendi
 
 ### UI İyileştirmeleri:
+
 - ✅ Dark mode'da başlıklar beyaz renkte
 - ✅ Logo boyutları büyütüldü (h-16 & h-24)
 - ✅ "MektupYolla" span'ları kaldırıldı
@@ -167,22 +178,27 @@ CREATE POLICY "Users can delete own letters"
 ## 🧪 Test Etme
 
 ### 1. Uygulamayı Başlatın
+
 ```bash
 npm run dev
 ```
 
 ### 2. Test Senaryoları
+
 1. **Kayıt Olma:**
+
    - `/kayit` sayfasına gidin
    - E-posta, şifre ve ad soyad girin
    - "Kayıt Ol" butonuna tıklayın
    - E-posta onayı (enabled ise) bekleyin
 
 2. **Giriş Yapma:**
+
    - `/giris` sayfasına gidin
    - E-posta ve şifre ile giriş yapın
 
 3. **Google ile Giriş:**
+
    - "Google ile Giriş Yap" butonuna tıklayın
    - Google hesabınızı seçin
 
@@ -194,10 +210,12 @@ npm run dev
 ## 🔒 Güvenlik Notları
 
 1. **Environment Variables:**
+
    - `.env` dosyasını asla Git'e commit etmeyin
    - Production'da environment variables'ları host platformunuzda ayarlayın
 
 2. **API Keys:**
+
    - Anon key public kullanım içindir (frontend'de kullanılabilir)
    - Service role key'i asla frontend'de kullanmayın
 
@@ -214,14 +232,17 @@ npm run dev
 ## 🐛 Sorun Giderme
 
 ### Hata: "Invalid API Key"
+
 - `.env` dosyasındaki key'leri kontrol edin
 - Geliştirme sunucusunu yeniden başlatın
 
 ### Hata: "Email not confirmed"
+
 - Supabase Dashboard > Authentication > Settings
 - "Enable email confirmations" seçeneğini kapatın (development için)
 
 ### Google OAuth çalışmıyor
+
 - Authorized redirect URIs'ı kontrol edin
 - Google Cloud Console'da OAuth consent screen'i ayarlayın
 - Supabase'de Google provider ayarlarını kontrol edin
@@ -229,6 +250,7 @@ npm run dev
 ## 🎉 Sonuç
 
 Tüm adımlar tamamlandığında:
+
 - ✅ Kullanıcılar email ile kayıt olabilir
 - ✅ Kullanıcılar email ile giriş yapabilir
 - ✅ Kullanıcılar Google ile giriş yapabilir

@@ -10,7 +10,7 @@ const LoginPage = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  
+
   const { signIn, signInWithGoogle } = useAuth();
   const navigate = useNavigate();
 
@@ -21,7 +21,7 @@ const LoginPage = () => {
 
     try {
       const { error } = await signIn(email, password);
-      
+
       if (error) {
         setError("E-posta veya şifre hatalı. Lütfen tekrar deneyin.");
       } else {
@@ -40,7 +40,7 @@ const LoginPage = () => {
 
     try {
       const { error } = await signInWithGoogle();
-      
+
       if (error) {
         setError("Google ile giriş yapılamadı. Lütfen tekrar deneyin.");
       }
@@ -63,10 +63,13 @@ const LoginPage = () => {
         <div className="max-w-md w-full space-y-8">
           {/* Logo */}
           <div className="text-center">
-            <Link to="/" className="inline-flex items-center justify-center mb-6">
-              <img 
-                src="/logo-2.png" 
-                alt="MektupYolla Logo" 
+            <Link
+              to="/"
+              className="inline-flex items-center justify-center mb-6"
+            >
+              <img
+                src="/logo-2.png"
+                alt="MektupYolla Logo"
                 className="h-24 w-auto object-contain"
               />
             </Link>
@@ -89,10 +92,12 @@ const LoginPage = () => {
             {error && (
               <div className="mb-4 p-4 bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-800 rounded-lg flex items-start">
                 <AlertCircle className="h-5 w-5 text-red-600 dark:text-red-400 mt-0.5 mr-2 flex-shrink-0" />
-                <p className="text-sm text-red-800 dark:text-red-300">{error}</p>
+                <p className="text-sm text-red-800 dark:text-red-300">
+                  {error}
+                </p>
               </div>
             )}
-            
+
             <form onSubmit={handleSubmit} className="space-y-6">
               {/* Email Input */}
               <div>
@@ -181,8 +186,8 @@ const LoginPage = () => {
               </div>
 
               {/* Submit Button */}
-              <button 
-                type="submit" 
+              <button
+                type="submit"
                 disabled={loading}
                 className="w-full btn-primary disabled:opacity-50 disabled:cursor-not-allowed"
               >
