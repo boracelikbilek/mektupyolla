@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import SEO from "../components/SEO";
-import { Mail, ArrowLeft, AlertCircle, CheckCircle } from "lucide-react";
+import { Mail, ArrowLeft, AlertCircle, CheckCircle, Home } from "lucide-react";
 import { useAuth } from "../contexts/AuthContext";
 
 const ForgotPasswordPage = () => {
@@ -43,6 +43,15 @@ const ForgotPasswordPage = () => {
       />
 
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary-50 via-white to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 py-12 px-4 sm:px-6 lg:px-8">
+        {/* Ana Sayfa Butonu */}
+        <Link
+          to="/"
+          className="fixed top-6 left-6 flex items-center space-x-2 text-gray-600 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors z-50"
+        >
+          <Home className="w-5 h-5" />
+          <span className="font-medium">Ana Sayfa</span>
+        </Link>
+
         <div className="max-w-md w-full space-y-8">
           {/* Logo */}
           <div className="text-center">

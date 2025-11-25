@@ -7,6 +7,7 @@ import FAQPage from "./pages/FAQPage";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import ForgotPasswordPage from "./pages/ForgotPasswordPage";
+import DashboardPage from "./pages/DashboardPage";
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
       <Route path="giris" element={<LoginPage />} />
       <Route path="kayit" element={<RegisterPage />} />
       <Route path="sifremi-unuttum" element={<ForgotPasswordPage />} />
+      <Route path="dashboard" element={<DashboardPage />} />
     </Routes>
   );
 }
