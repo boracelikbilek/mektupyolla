@@ -16,7 +16,7 @@ Modern teknoloji ile geleneksel mektup kültürünü birleştiren dijital mektup
 ## 🛠️ Teknolojiler
 
 - **Frontend Framework:** React 18
-- **Build Tool:** Vite
+- **Build Tool:** Vites
 - **Styling:** Tailwind CSS
 - **Routing:** React Router v6
 - **Icons:** Lucide React
@@ -26,16 +26,19 @@ Modern teknoloji ile geleneksel mektup kültürünü birleştiren dijital mektup
 ## 📦 Kurulum
 
 1. Bağımlılıkları yükleyin:
+
 ```bash
 npm install
 ```
 
 2. Geliştirme sunucusunu başlatın:
+
 ```bash
 npm run dev
 ```
 
 3. Tarayıcınızda açın:
+
 ```
 http://localhost:3000
 ```
@@ -79,11 +82,13 @@ mektupyollacom/
 ## 🎨 Tasarım Sistemi
 
 ### Renkler
+
 - **Primary:** Indigo/Purple gradient (#6366f1)
 - **Accent:** Amber (#fbbf24)
 - **Background:** White/Gray
 
 ### Tipografi
+
 - **Font:** Inter
 
 ## 🔐 Güvenlik
@@ -96,6 +101,7 @@ mektupyollacom/
 ## 📱 Responsive Tasarım
 
 Tüm sayfalar aşağıdaki ekran boyutları için optimize edilmiştir:
+
 - Mobile: 320px - 767px
 - Tablet: 768px - 1023px
 - Desktop: 1024px+
