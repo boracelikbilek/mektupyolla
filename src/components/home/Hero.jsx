@@ -1,6 +1,9 @@
 import { ArrowRight, Sparkles } from 'lucide-react'
+import { useNavigate } from 'react-router-dom'
 
 const Hero = () => {
+  const navigate = useNavigate()
+
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-indigo-950 via-slate-900 to-gray-900">
       {/* Animated Background Elements */}
@@ -35,8 +38,11 @@ const Hero = () => {
 
           {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16 animate-slide-up" style={{ animationDelay: '0.4s' }}>
-            <button className="btn-primary text-lg px-8 py-4 group">
-              Hemen Mektup Yaz
+            <button 
+              onClick={() => navigate('/giris')}
+              className="btn-primary text-lg px-8 py-4 group"
+            >
+              Hemen Başla
               <ArrowRight className="inline-block ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
             </button>
             <button className="btn-secondary text-lg px-8 py-4 bg-white/10 border-white/30 text-white hover:bg-white/20">

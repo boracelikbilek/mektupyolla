@@ -76,7 +76,7 @@ const BlogPage = () => {
       />
 
       {/* Hero Section */}
-      <section className="pt-32 pb-16 bg-gradient-to-br from-primary-600 to-purple-600">
+      <section className="pt-32 pb-16 bg-gradient-to-br from-primary-500 to-primary-700 dark:from-gray-800 dark:to-gray-900">
         <div className="container-custom text-center text-white">
           <h1 className="text-4xl md:text-6xl font-bold mb-6">
             Blog
@@ -88,7 +88,7 @@ const BlogPage = () => {
       </section>
 
       {/* Categories */}
-      <section className="py-8 bg-white border-b">
+      <section className="py-8 bg-white dark:bg-gray-800 border-b dark:border-gray-700">
         <div className="container-custom">
           <div className="flex flex-wrap gap-3 justify-center">
             {categories.map((category, index) => (
@@ -97,7 +97,7 @@ const BlogPage = () => {
                 className={`px-6 py-2 rounded-full font-medium transition-all ${
                   index === 0
                     ? 'bg-primary-600 text-white'
-                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                    : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
                 }`}
               >
                 {category}
@@ -108,7 +108,7 @@ const BlogPage = () => {
       </section>
 
       {/* Blog Posts Grid */}
-      <section className="py-16 bg-gray-50">
+      <section className="py-16 bg-gray-50 dark:bg-gray-900">
         <div className="container-custom">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {blogPosts.map((post) => (
@@ -127,7 +127,7 @@ const BlogPage = () => {
                 </div>
 
                 <div className="p-6">
-                  <div className="flex items-center gap-4 text-sm text-gray-500 mb-3">
+                  <div className="flex items-center gap-4 text-sm text-gray-500 dark:text-gray-400 mb-3">
                     <div className="flex items-center gap-1">
                       <Calendar className="w-4 h-4" />
                       <span>{post.date}</span>
@@ -138,21 +138,21 @@ const BlogPage = () => {
                     </div>
                   </div>
 
-                  <h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-primary-600 transition-colors">
+                  <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors">
                     {post.title}
                   </h3>
 
-                  <p className="text-gray-600 mb-4 line-clamp-2">
+                  <p className="text-gray-600 dark:text-gray-400 mb-4 line-clamp-2">
                     {post.excerpt}
                   </p>
 
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
                       <User className="w-4 h-4 text-gray-400" />
-                      <span className="text-sm text-gray-600">{post.author}</span>
+                      <span className="text-sm text-gray-600 dark:text-gray-400">{post.author}</span>
                     </div>
 
-                    <button className="text-primary-600 font-semibold text-sm flex items-center gap-1 group-hover:gap-2 transition-all">
+                    <button className="text-primary-600 dark:text-primary-400 font-semibold text-sm flex items-center gap-1 group-hover:gap-2 transition-all">
                       Devamını Oku
                       <ArrowRight className="w-4 h-4" />
                     </button>

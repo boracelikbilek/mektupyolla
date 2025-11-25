@@ -1,4 +1,5 @@
 import { PenTool, MapPin, Send, ArrowRight } from 'lucide-react'
+import { useNavigate } from 'react-router-dom'
 
 const steps = [
   {
@@ -25,6 +26,8 @@ const steps = [
 ]
 
 const HowItWorks = () => {
+  const navigate = useNavigate()
+
   return (
     <section id="nasil-calisir" className="section-padding bg-white">
       <div className="container-custom">
@@ -83,7 +86,10 @@ const HowItWorks = () => {
 
           {/* CTA Button */}
           <div className="text-center mt-16">
-            <button className="btn-primary text-lg px-8 py-4">
+            <button 
+              onClick={() => navigate('/giris')}
+              className="btn-primary text-lg px-8 py-4"
+            >
               Hemen Başla
               <ArrowRight className="inline-block ml-2 w-5 h-5" />
             </button>

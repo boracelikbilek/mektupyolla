@@ -88,15 +88,15 @@ const faqs = [
 
 const FAQItem = ({ question, answer, isOpen, onClick }) => {
   return (
-    <div className="border-b border-gray-200 last:border-b-0">
+    <div className="border-b border-gray-200 dark:border-gray-700 last:border-b-0">
       <button
         onClick={onClick}
-        className="w-full flex items-center justify-between py-5 text-left hover:text-primary-600 transition-colors"
+        className="w-full flex items-center justify-between py-5 text-left hover:text-primary-600 dark:hover:text-primary-400 transition-colors"
       >
-        <span className="font-semibold text-gray-900 pr-8">{question}</span>
+        <span className="font-semibold text-gray-900 dark:text-white pr-8">{question}</span>
         <div className="flex-shrink-0">
           {isOpen ? (
-            <Minus className="w-5 h-5 text-primary-600" />
+            <Minus className="w-5 h-5 text-primary-600 dark:text-primary-400" />
           ) : (
             <Plus className="w-5 h-5 text-gray-400" />
           )}
@@ -105,7 +105,7 @@ const FAQItem = ({ question, answer, isOpen, onClick }) => {
       
       {isOpen && (
         <div className="pb-5 pr-12">
-          <p className="text-gray-600 leading-relaxed">{answer}</p>
+          <p className="text-gray-600 dark:text-gray-400 leading-relaxed">{answer}</p>
         </div>
       )}
     </div>
@@ -132,7 +132,7 @@ const FAQPage = () => {
       />
 
       {/* Hero Section */}
-      <section className="pt-32 pb-16 bg-gradient-to-br from-primary-600 to-purple-600">
+      <section className="pt-32 pb-16 bg-gradient-to-br from-primary-500 to-primary-700 dark:from-gray-800 dark:to-gray-900">
         <div className="container-custom text-center text-white">
           <h1 className="text-4xl md:text-6xl font-bold mb-6">
             Sıkça Sorulan Sorular
@@ -144,13 +144,13 @@ const FAQPage = () => {
       </section>
 
       {/* FAQ Content */}
-      <section className="py-16 bg-gray-50">
+      <section className="py-16 bg-gray-50 dark:bg-gray-900">
         <div className="container-custom max-w-4xl">
           <div className="space-y-8">
             {faqs.map((category, categoryIndex) => (
               <div key={categoryIndex}>
-                <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center">
-                  <span className="w-2 h-8 bg-primary-600 rounded-full mr-3"></span>
+                <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 flex items-center">
+                  <span className="w-2 h-8 bg-primary-600 dark:bg-primary-500 rounded-full mr-3"></span>
                   {category.category}
                 </h2>
 
@@ -170,11 +170,11 @@ const FAQPage = () => {
           </div>
 
           {/* CTA */}
-          <div className="mt-16 text-center card bg-gradient-to-r from-primary-50 to-purple-50 border-2 border-primary-100">
-            <h3 className="text-2xl font-bold text-gray-900 mb-4">
+          <div className="mt-16 text-center card bg-primary-50 dark:bg-primary-900/20 border-2 border-primary-200 dark:border-primary-800">
+            <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
               Cevabını Bulamadınız mı?
             </h3>
-            <p className="text-gray-600 mb-6">
+            <p className="text-gray-600 dark:text-gray-400 mb-6">
               7/24 müşteri hizmetleri ekibimiz size yardımcı olmak için burada
             </p>
             <button className="btn-primary">

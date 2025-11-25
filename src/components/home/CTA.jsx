@@ -1,6 +1,9 @@
 import { ArrowRight, Sparkles } from 'lucide-react'
+import { useNavigate } from 'react-router-dom'
 
 const CTA = () => {
+  const navigate = useNavigate()
+
   return (
     <section className="section-padding bg-gradient-to-r from-primary-600 via-purple-600 to-pink-600 relative overflow-hidden">
       {/* Animated Background Elements */}
@@ -25,7 +28,10 @@ const CTA = () => {
           </p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <button className="bg-white text-primary-600 px-8 py-4 rounded-lg font-bold text-lg hover:bg-gray-100 transition-all shadow-xl hover:shadow-2xl transform hover:-translate-y-1 group">
+            <button 
+              onClick={() => navigate('/giris')}
+              className="bg-white text-primary-600 px-8 py-4 rounded-lg font-bold text-lg hover:bg-gray-100 transition-all shadow-xl hover:shadow-2xl transform hover:-translate-y-1 group"
+            >
               Ücretsiz Dene
               <ArrowRight className="inline-block ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
             </button>
