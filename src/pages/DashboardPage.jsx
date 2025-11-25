@@ -308,7 +308,10 @@ const DashboardPage = () => {
                     İlk mektubunuzu yazarak sevdiklerinize duygularınızı
                     iletmeye başlayın.
                   </p>
-                  <Link to="/yeni-mektup" className="btn-primary inline-flex items-center">
+                  <Link
+                    to="/yeni-mektup"
+                    className="btn-primary inline-flex items-center"
+                  >
                     <Plus className="w-5 h-5 mr-2" />
                     İlk Mektubunu Yaz
                   </Link>
