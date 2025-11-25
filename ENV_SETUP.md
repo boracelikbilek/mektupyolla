@@ -12,6 +12,7 @@ VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
 ```
 
 **Nasıl Alınır:**
+
 1. https://supabase.com adresine gidin
 2. Projenize tıklayın
 3. Settings > API bölümüne gidin
@@ -24,11 +25,13 @@ VITE_APP_URL=https://your-domain.com
 ```
 
 **Örnekler:**
+
 - Development: `VITE_APP_URL=http://localhost:5173`
 - Vercel: `VITE_APP_URL=https://your-app.vercel.app`
 - Production: `VITE_APP_URL=https://mektupyolla.com`
 
 **Neden Gerekli:**
+
 - OAuth redirect URL'leri için kullanılır
 - Şifre sıfırlama email linkleri için kullanılır
 - Google ile giriş yaptıktan sonra doğru URL'e yönlendirme için
@@ -47,6 +50,7 @@ VITE_APP_URL=http://localhost:5173
 ## Deployment Ortamları İçin
 
 ### Vercel
+
 1. Vercel Dashboard'a gidin
 2. Projenizi seçin
 3. Settings > Environment Variables
@@ -54,6 +58,7 @@ VITE_APP_URL=http://localhost:5173
 5. Production, Preview ve Development ortamları için ayrı değerler belirleyebilirsiniz
 
 ### Netlify
+
 1. Netlify Dashboard'a gidin
 2. Site settings > Build & deploy > Environment
 3. Her değişkeni ekleyin
@@ -61,6 +66,7 @@ VITE_APP_URL=http://localhost:5173
 ## Güvenlik Notları
 
 ⚠️ **ÖNEMLİ:**
+
 - `.env` dosyasını asla Git'e commit etmeyin
 - `.env` dosyası `.gitignore` içinde olmalı
 - `VITE_SUPABASE_ANON_KEY` public kullanım için güvenlidir
@@ -69,18 +75,24 @@ VITE_APP_URL=http://localhost:5173
 ## Sorun Giderme
 
 ### Problem: OAuth redirect çalışmıyor
-**Çözüm:** 
+
+**Çözüm:**
+
 - `VITE_APP_URL` değerinin deployment URL'iniz ile eşleştiğinden emin olun
 - Supabase Dashboard > Authentication > URL Configuration
 - "Redirect URLs" kısmına deployment URL'inizi ekleyin
 
 ### Problem: Localhost'ta çalışıyor ama production'da çalışmıyor
+
 **Çözüm:**
+
 - Vercel/Netlify environment variables'ı kontrol edin
 - `VITE_APP_URL` değerinin production URL'i olduğundan emin olun
 
 ### Problem: "Invalid API Key" hatası
+
 **Çözüm:**
+
 - Supabase key'lerini tekrar kontrol edin
 - Development sunucusunu yeniden başlatın: `npm run dev`
 
@@ -100,6 +112,7 @@ npm run dev
 ```
 
 Production'da test etmek için:
+
 1. Deployment platform'unda environment variables'ı ayarlayın
 2. Yeniden deploy edin
 3. Login/Register işlemlerini test edin

@@ -71,7 +71,7 @@ export const AuthProvider = ({ children }) => {
   // Sign in with Google
   const signInWithGoogle = async () => {
     const appUrl = import.meta.env.VITE_APP_URL || window.location.origin;
-    
+
     try {
       const { data, error } = await supabase.auth.signInWithOAuth({
         provider: "google",

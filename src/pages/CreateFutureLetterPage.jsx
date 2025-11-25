@@ -2,6 +2,8 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 import SEO from "../components/SEO";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
 import {
   Calendar,
   Mail,
@@ -16,6 +18,9 @@ import {
   Heart,
   Star,
   Shield,
+  FileText,
+  Send,
+  AlertCircle,
 } from "lucide-react";
 
 const CreateFutureLetterPage = () => {
@@ -25,7 +30,11 @@ const CreateFutureLetterPage = () => {
   const [formData, setFormData] = useState({
     envelope: "",
     paperColor: "",
+    letterContent: "",
+    envelopeText: "",
+    shippingDate: "",
     addons: [],
+    futureDeliveryMonths: 1,
     recipient: {
       firstName: "",
       lastName: "",
@@ -33,8 +42,6 @@ const CreateFutureLetterPage = () => {
       email: "",
       address: "",
     },
-    letterContent: "",
-    deliveryDate: "",
   });
 
   // Supabase Storage URL'leri (Placeholder'lar - gerçek görselleri yükledikten sonra değişecek)
@@ -42,37 +49,43 @@ const CreateFutureLetterPage = () => {
     {
       id: "kraft",
       name: "Kraft Zarf",
-      image: "https://placehold.co/400x300/e8d7c3/8b4513?text=Kraft+Zarf",
+      image:
+        "https://crdsrjcicdbgnylfjewd.supabase.co/storage/v1/object/public/envelopes/kraft.jpg",
       description: "Doğal ve şık",
     },
     {
       id: "pink",
       name: "Pembe Zarf",
-      image: "https://placehold.co/400x300/ffc0cb/c71585?text=Pembe+Zarf",
+      image:
+        "https://crdsrjcicdbgnylfjewd.supabase.co/storage/v1/object/public/envelopes/pink.jpg",
       description: "Romantik ve sevgi dolu",
     },
     {
       id: "blue",
       name: "Mavi Zarf",
-      image: "https://placehold.co/400x300/87ceeb/4169e1?text=Mavi+Zarf",
+      image:
+        "https://crdsrjcicdbgnylfjewd.supabase.co/storage/v1/object/public/envelopes/blue.jpg",
       description: "Huzurlu ve sakin",
     },
     {
       id: "white",
       name: "Beyaz Zarf",
-      image: "https://placehold.co/400x300/ffffff/000000?text=Beyaz+Zarf",
+      image:
+        "https://crdsrjcicdbgnylfjewd.supabase.co/storage/v1/object/public/envelopes/white.jpg",
       description: "Klasik ve zarif",
     },
     {
       id: "heart",
       name: "Kalpli Zarf",
-      image: "https://placehold.co/400x300/ff69b4/c71585?text=Kalpli+Zarf",
+      image:
+        "https://crdsrjcicdbgnylfjewd.supabase.co/storage/v1/object/public/envelopes/heart.jpg",
       description: "Aşk dolu",
     },
     {
       id: "pattern",
       name: "Desenli Zarf",
-      image: "https://placehold.co/400x300/f0e68c/8b4513?text=Desenli+Zarf",
+      image:
+        "https://crdsrjcicdbgnylfjewd.supabase.co/storage/v1/object/public/envelopes/pattern.jpg",
       description: "Eğlenceli ve renkli",
     },
   ];
@@ -132,7 +145,26 @@ const CreateFutureLetterPage = () => {
     },
   ];
 
-  const totalSteps = 4;
+  const totalSteps = 6;
+
+  // Hafta sonu kontrolü
+  const isWeekend = (date) => {
+    const day = date.getDay();
+    return day === 0 || day === 6; // Pazar=0, Cumartesi=6
+  };
+
+  // Minimum tarih (yarın, hafta sonu değilse)
+  const getMinShippingDate = () => {
+    let date = new Date();
+    date.setDate(date.getDate() + 1); // Yarın
+
+    // Eğer hafta sonuysa, pazartesiye al
+    while (isWeekend(date)) {
+      date.setDate(date.getDate() + 1);
+    }
+
+    return date.toISOString().split("T")[0];
+  };
 
   const handleEnvelopeSelect = (envelopeId) => {
     setFormData({ ...formData, envelope: envelopeId });
@@ -189,8 +221,14 @@ const CreateFutureLetterPage = () => {
       case 2:
         return formData.paperColor !== "";
       case 3:
-        return true; // Addons opsiyonel
+        return (
+          formData.letterContent.trim() !== "" && formData.shippingDate !== ""
+        );
       case 4:
+        return true; // Addons opsiyonel
+      case 5:
+        return formData.futureDeliveryMonths > 0;
+      case 6:
         return (
           formData.recipient.firstName &&
           formData.recipient.lastName &&
@@ -211,9 +249,9 @@ const CreateFutureLetterPage = () => {
         canonical="https://mektupyolla.com/gelecege-mektup"
       />
 
-      <div className="min-h-screen bg-gradient-to-br from-purple-50 via-pink-50 to-blue-50 dark:from-gray-900 dark:via-purple-900/20 dark:to-blue-900/20">
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
         {/* Header */}
-        <header className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-lg border-b border-gray-200 dark:border-gray-700 sticky top-0 z-40">
+        <header className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 sticky top-0 z-40 shadow-sm">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-4">
             <div className="flex items-center justify-between">
               <button
@@ -371,8 +409,122 @@ const CreateFutureLetterPage = () => {
             </div>
           )}
 
-          {/* Step 3: Add-ons */}
+          {/* Step 3: Mektup İçeriği */}
           {currentStep === 3 && (
+            <div className="animate-fadeIn">
+              <div className="text-center mb-8 sm:mb-12">
+                <div className="inline-flex items-center justify-center w-16 h-16 bg-green-100 dark:bg-green-900/30 rounded-full mb-4">
+                  <FileText className="w-8 h-8 text-green-600 dark:text-green-400" />
+                </div>
+                <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 dark:text-white mb-3">
+                  Mektubunu Yaz
+                </h2>
+                <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+                  İçini dök, duygularını paylaş. Bu mektup belirlediğin tarihte
+                  Kargoya Verilecek.
+                </p>
+              </div>
+
+              <div className="max-w-4xl mx-auto space-y-6">
+                {/* Zarf Üzerine Yazı (Opsiyonel) */}
+                <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700 p-6">
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    Zarf Üzerine Yazı (Opsiyonel)
+                  </label>
+                  <p className="text-xs text-gray-500 dark:text-gray-400 mb-3">
+                    Zarfın üzerine el yazısı ile yazılacak kısa bir mesaj.
+                    Maksimum 30 karakter.
+                  </p>
+                  <input
+                    type="text"
+                    maxLength={30}
+                    value={formData.envelopeText}
+                    onChange={(e) =>
+                      setFormData({ ...formData, envelopeText: e.target.value })
+                    }
+                    className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all font-handwriting text-lg"
+                    placeholder="Örn: Seni seviyorum ❤️"
+                    style={{ fontFamily: "'Caveat', cursive" }}
+                  />
+                  <div className="text-right text-xs text-gray-500 dark:text-gray-400 mt-1">
+                    {formData.envelopeText.length}/30
+                  </div>
+                </div>
+
+                {/* Mektup İçeriği */}
+                <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700 p-6">
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    Mektup İçeriği *
+                  </label>
+                  <p className="text-xs text-gray-500 dark:text-gray-400 mb-3">
+                    Kalbinden geleni yaz. Yazını şekillendirebilirsin.
+                  </p>
+                  <div className="prose prose-sm max-w-none dark:prose-invert">
+                    <ReactQuill
+                      theme="snow"
+                      value={formData.letterContent}
+                      onChange={(value) =>
+                        setFormData({ ...formData, letterContent: value })
+                      }
+                      modules={{
+                        toolbar: [
+                          [{ header: [1, 2, 3, false] }],
+                          ["bold", "italic", "underline", "strike"],
+                          [{ list: "ordered" }, { list: "bullet" }],
+                          [{ align: [] }],
+                          ["link"],
+                          ["clean"],
+                        ],
+                      }}
+                      className="bg-white dark:bg-gray-700 rounded-lg"
+                      style={{ minHeight: "300px" }}
+                    />
+                  </div>
+                </div>
+
+                {/* Kargoya Verilme Tarihi */}
+                <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700 p-6">
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    Kargoya Verilme Tarihi *
+                  </label>
+                  <p className="text-xs text-gray-500 dark:text-gray-400 mb-3">
+                    Mektubun hangi tarihte kargoya verileceğini seç. Hafta
+                    sonları kargoya verilemez.
+                  </p>
+                  <div className="flex items-start space-x-3">
+                    <AlertCircle className="w-5 h-5 text-yellow-600 dark:text-yellow-400 flex-shrink-0 mt-3" />
+                    <div className="flex-1">
+                      <input
+                        type="date"
+                        min={getMinShippingDate()}
+                        value={formData.shippingDate}
+                        onChange={(e) => {
+                          const selectedDate = new Date(e.target.value);
+                          if (isWeekend(selectedDate)) {
+                            alert(
+                              "Hafta sonu kargoya verilemez! Lütfen hafta içi bir gün seçin."
+                            );
+                            return;
+                          }
+                          setFormData({
+                            ...formData,
+                            shippingDate: e.target.value,
+                          });
+                        }}
+                        className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all"
+                      />
+                      <p className="text-xs text-yellow-700 dark:text-yellow-300 mt-2">
+                        ⚠️ Cumartesi ve Pazar günleri kargoya verilemez.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Step 4: Add-ons */}
+          {currentStep === 4 && (
             <div className="animate-fadeIn">
               <div className="text-center mb-8 sm:mb-12">
                 <div className="inline-flex items-center justify-center w-16 h-16 bg-indigo-100 dark:bg-indigo-900/30 rounded-full mb-4">
@@ -446,8 +598,127 @@ const CreateFutureLetterPage = () => {
             </div>
           )}
 
-          {/* Step 4: Alıcı Bilgileri */}
-          {currentStep === 4 && (
+          {/* Step 5: Geleceğe Gönderim Tarihi */}
+          {currentStep === 5 && (
+            <div className="animate-fadeIn">
+              <div className="text-center mb-8 sm:mb-12">
+                <div className="inline-flex items-center justify-center w-16 h-16 bg-purple-100 dark:bg-purple-900/30 rounded-full mb-4">
+                  <Calendar className="w-8 h-8 text-purple-600 dark:text-purple-400" />
+                </div>
+                <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 dark:text-white mb-3">
+                  Ne Zaman Teslim Edilsin?
+                </h2>
+                <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+                  Mektubun kargoya verildikten kaç ay sonra alıcıya teslim
+                  edilmesini istiyorsun?
+                </p>
+              </div>
+
+              <div className="max-w-3xl mx-auto">
+                <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-gray-200 dark:border-gray-700 p-8">
+                  <div className="flex items-center justify-center space-x-4 mb-8">
+                    <Send className="w-12 h-12 text-purple-600 dark:text-purple-400" />
+                    <div className="text-4xl font-bold text-gray-900 dark:text-white">
+                      →
+                    </div>
+                    <Clock className="w-12 h-12 text-purple-600 dark:text-purple-400" />
+                  </div>
+
+                  <div className="space-y-6">
+                    <div>
+                      <label className="block text-center text-lg font-medium text-gray-700 dark:text-gray-300 mb-4">
+                        Kaç Ay Sonra?
+                      </label>
+
+                      {/* Hızlı Seçim Butonları */}
+                      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
+                        {[1, 3, 6, 12].map((months) => (
+                          <button
+                            key={months}
+                            onClick={() =>
+                              setFormData({
+                                ...formData,
+                                futureDeliveryMonths: months,
+                              })
+                            }
+                            className={`py-4 px-6 rounded-xl font-semibold transition-all duration-300 ${
+                              formData.futureDeliveryMonths === months
+                                ? "bg-purple-500 text-white shadow-lg scale-105"
+                                : "bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600"
+                            }`}
+                          >
+                            <div className="text-2xl font-bold">{months}</div>
+                            <div className="text-xs">Ay</div>
+                          </button>
+                        ))}
+                      </div>
+
+                      {/* Özel Ay Seçimi */}
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                          Veya Özel Süre Belirle
+                        </label>
+                        <div className="flex items-center space-x-3">
+                          <input
+                            type="number"
+                            min="1"
+                            max="60"
+                            value={formData.futureDeliveryMonths}
+                            onChange={(e) =>
+                              setFormData({
+                                ...formData,
+                                futureDeliveryMonths:
+                                  parseInt(e.target.value) || 1,
+                              })
+                            }
+                            className="flex-1 px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-center text-2xl font-bold focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
+                          />
+                          <span className="text-gray-600 dark:text-gray-400 font-medium">
+                            Ay Sonra
+                          </span>
+                        </div>
+                        <p className="text-xs text-gray-500 dark:text-gray-400 mt-2 text-center">
+                          Maksimum 60 ay (5 yıl)
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* Özet Bilgi */}
+                    <div className="bg-purple-50 dark:bg-purple-900/20 rounded-xl p-4 border border-purple-200 dark:border-purple-800">
+                      <div className="flex items-start space-x-3">
+                        <Clock className="w-5 h-5 text-purple-600 dark:text-purple-400 flex-shrink-0 mt-0.5" />
+                        <div className="text-sm text-purple-900 dark:text-purple-200">
+                          <p className="font-semibold mb-1">Teslimat Zamanı:</p>
+                          <p>
+                            Mektubun{" "}
+                            <span className="font-bold">
+                              {formData.shippingDate
+                                ? new Date(
+                                    formData.shippingDate
+                                  ).toLocaleDateString("tr-TR", {
+                                    year: "numeric",
+                                    month: "long",
+                                    day: "numeric",
+                                  })
+                                : "belirlediğin tarihte"}
+                            </span>{" "}
+                            kargoya verilecek ve{" "}
+                            <span className="font-bold">
+                              {formData.futureDeliveryMonths} ay sonra
+                            </span>{" "}
+                            alıcıya teslim edilecek.
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Step 6: Alıcı Bilgileri */}
+          {currentStep === 6 && (
             <div className="animate-fadeIn">
               <div className="text-center mb-8 sm:mb-12">
                 <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-100 dark:bg-blue-900/30 rounded-full mb-4">
@@ -469,10 +740,9 @@ const CreateFutureLetterPage = () => {
                         İçerik Moderasyonu
                       </h4>
                       <p className="text-xs text-yellow-800 dark:text-yellow-300">
-                        Tüm mektuplar yapay zeka ile otomatik olarak
-                        kontrol edilmektedir. Uygunsuz içerik tespit edilirse
-                        mektubunuz gönderilemeyecektir. (Örnek: küfür, hakaret,
-                        tehdit vb.)
+                        Tüm mektuplar yapay zeka ile otomatik olarak kontrol
+                        edilmektedir. Uygunsuz içerik tespit edilirse mektubunuz
+                        gönderilemeyecektir. (Örnek: küfür, hakaret, tehdit vb.)
                       </p>
                     </div>
                   </div>
