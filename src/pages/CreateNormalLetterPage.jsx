@@ -5,7 +5,7 @@ import SEO from "../components/SEO";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import {
-  Heart,
+  Calendar,
   Mail,
   Palette,
   Gift,
@@ -14,16 +14,16 @@ import {
   ArrowLeft,
   Check,
   Sparkles,
+  Clock,
+  Heart,
   Star,
   Shield,
   FileText,
-  AlertCircle,
-  Clock,
-  Calendar,
   Send,
+  AlertCircle,
 } from "lucide-react";
 
-const CreateLoveLetterPage = () => {
+const CreateNormalLetterPage = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
   const [currentStep, setCurrentStep] = useState(1);
@@ -45,42 +45,48 @@ const CreateLoveLetterPage = () => {
     },
   });
 
-  // Supabase Storage URL'leri
+  // Supabase Storage URL'leri (Placeholder'lar - gerçek görselleri yükledikten sonra değişecek)
   const envelopes = [
     {
       id: "kraft",
       name: "Kraft Zarf",
-      image: "https://crdsrjcicdbgnylfjewd.supabase.co/storage/v1/object/public/envelopes/kraft.jpg",
+      image:
+        "https://crdsrjcicdbgnylfjewd.supabase.co/storage/v1/object/public/envelopes/kraft.jpg",
       description: "Doğal ve şık",
     },
     {
       id: "pink",
       name: "Pembe Zarf",
-      image: "https://crdsrjcicdbgnylfjewd.supabase.co/storage/v1/object/public/envelopes/pink.jpg",
+      image:
+        "https://crdsrjcicdbgnylfjewd.supabase.co/storage/v1/object/public/envelopes/pink.jpg",
       description: "Romantik ve sevgi dolu",
     },
     {
       id: "blue",
       name: "Mavi Zarf",
-      image: "https://crdsrjcicdbgnylfjewd.supabase.co/storage/v1/object/public/envelopes/blue.jpg",
+      image:
+        "https://crdsrjcicdbgnylfjewd.supabase.co/storage/v1/object/public/envelopes/blue.jpg",
       description: "Huzurlu ve sakin",
     },
     {
       id: "white",
       name: "Beyaz Zarf",
-      image: "https://crdsrjcicdbgnylfjewd.supabase.co/storage/v1/object/public/envelopes/white.jpg",
+      image:
+        "https://crdsrjcicdbgnylfjewd.supabase.co/storage/v1/object/public/envelopes/white.jpg",
       description: "Klasik ve zarif",
     },
     {
       id: "heart",
       name: "Kalpli Zarf",
-      image: "https://crdsrjcicdbgnylfjewd.supabase.co/storage/v1/object/public/envelopes/heart.jpg",
+      image:
+        "https://crdsrjcicdbgnylfjewd.supabase.co/storage/v1/object/public/envelopes/heart.jpg",
       description: "Aşk dolu",
     },
     {
       id: "pattern",
       name: "Desenli Zarf",
-      image: "https://crdsrjcicdbgnylfjewd.supabase.co/storage/v1/object/public/envelopes/pattern.jpg",
+      image:
+        "https://crdsrjcicdbgnylfjewd.supabase.co/storage/v1/object/public/envelopes/pattern.jpg",
       description: "Eğlenceli ve renkli",
     },
   ];
@@ -114,53 +120,53 @@ const CreateLoveLetterPage = () => {
       id: "flower",
       name: "Çiçek",
       icon: Sparkles,
-      price: 50,
+      price: "50₺",
       description: "Kuru çiçek süslemesi",
     },
     {
       id: "sticker",
       name: "Sticker",
       icon: Star,
-      price: 20,
+      price: "20₺",
       description: "Özel tasarım çıkartmalar",
     },
     {
       id: "perfume",
       name: "Parfüm",
       icon: Heart,
-      price: 75,
+      price: "75₺",
       description: "Hafif koku spreyi",
     },
     {
       id: "wax-seal",
       name: "Mum Mühür",
       icon: Shield,
-      price: 40,
+      price: "40₺",
       description: "Geleneksel mum mühür",
     },
   ];
 
   const totalSteps = 6;
 
+  // Teslimat tarihini hesapla
   const calculateDeliveryDate = () => {
     const today = new Date();
     let deliveryDate = new Date(today);
 
     if (formData.deliveryOption === "custom" && formData.customDeliveryDate) {
-      deliveryDate = new Date(formData.customDeliveryDate);
-    } else {
-      deliveryDate.setDate(today.getDate() + formData.futureDeliveryDays);
+      return new Date(formData.customDeliveryDate);
     }
 
+    deliveryDate.setDate(today.getDate() + formData.futureDeliveryDays);
     return deliveryDate;
   };
 
+  // Gün sayısını ay'a çevir
   const daysToMonthsText = (days) => {
-    if (days < 30) return `${days} gün`;
-    const months = Math.floor(days / 30);
-    const remainingDays = days % 30;
-    if (remainingDays === 0) return `${months} ay`;
-    return `${months} ay ${remainingDays} gün`;
+    if (days === 30) return "1 Ay";
+    if (days === 60) return "2 Ay";
+    if (days % 30 === 0) return `${days / 30} Ay`;
+    return `${days} Gün`;
   };
 
   const handleEnvelopeSelect = (envelopeId) => {
@@ -205,13 +211,10 @@ const CreateLoveLetterPage = () => {
   };
 
   const handleSubmit = () => {
-    // Checkout sayfasına yönlendir
-    navigate("/checkout", {
-      state: {
-        letterType: "love",
-        formData: formData,
-      },
-    });
+    // TODO: Backend'e gönderim yapılacak
+    console.log("Form Data:", formData);
+    alert("Mektubunuz oluşturuldu! (Backend entegrasyonu yapılacak)");
+    navigate("/dashboard");
   };
 
   const canProceed = () => {
@@ -245,9 +248,9 @@ const CreateLoveLetterPage = () => {
   return (
     <>
       <SEO
-        title="Sevgiliye Mektup Yaz | MektupYolla"
-        description="Sevgiline romantik bir mektup yaz, duygularını ifade et"
-        canonical="https://mektupyolla.com/sevgiliye-mektup"
+        title="Normal Mektup Yaz | MektupYolla"
+        description="Sevdiklerine normal kargo ile mektup gönder"
+        canonical="https://mektupyolla.com/normal-mektup"
       />
 
       <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
@@ -264,9 +267,9 @@ const CreateLoveLetterPage = () => {
               </button>
 
               <div className="flex items-center space-x-2">
-                <Heart className="w-5 h-5 text-pink-600 dark:text-pink-400" />
+                <Mail className="w-5 h-5 text-blue-600 dark:text-blue-400" />
                 <h1 className="text-lg sm:text-xl font-bold text-gray-900 dark:text-white">
-                  Sevgiliye Mektup
+                  Normal Mektup
                 </h1>
               </div>
 
@@ -279,7 +282,7 @@ const CreateLoveLetterPage = () => {
             <div className="mt-4">
               <div className="h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
                 <div
-                  className="h-full bg-gradient-to-r from-pink-500 to-rose-500 transition-all duration-500 ease-out"
+                  className="h-full bg-gradient-to-r from-blue-500 to-indigo-500 transition-all duration-500 ease-out"
                   style={{ width: `${(currentStep / totalSteps) * 100}%` }}
                 />
               </div>
@@ -293,14 +296,15 @@ const CreateLoveLetterPage = () => {
           {currentStep === 1 && (
             <div className="animate-fadeIn">
               <div className="text-center mb-8 sm:mb-12">
-                <div className="inline-flex items-center justify-center w-16 h-16 bg-pink-100 dark:bg-pink-900/30 rounded-full mb-4">
-                  <Mail className="w-8 h-8 text-pink-600 dark:text-pink-400" />
+                <div className="inline-flex items-center justify-center w-16 h-16 bg-purple-100 dark:bg-purple-900/30 rounded-full mb-4">
+                  <Mail className="w-8 h-8 text-purple-600 dark:text-purple-400" />
                 </div>
                 <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 dark:text-white mb-3">
                   Zarfını Seç
                 </h2>
                 <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-                  Sevgilinin eline geçecek zarfı özenle seç. Her zarf, aşkına özel bir dokunuş katacak.
+                  Mektubun hangi zarfta gelecek? Her zarf, mesajına özel bir
+                  dokunuş katacak.
                 </p>
               </div>
 
@@ -311,12 +315,12 @@ const CreateLoveLetterPage = () => {
                     onClick={() => handleEnvelopeSelect(envelope.id)}
                     className={`group relative bg-white dark:bg-gray-800 rounded-2xl p-4 sm:p-6 border-2 transition-all duration-300 hover:scale-105 hover:shadow-xl ${
                       formData.envelope === envelope.id
-                        ? "border-pink-500 dark:border-pink-400 shadow-2xl shadow-pink-500/50 ring-4 ring-pink-500/20"
-                        : "border-gray-200 dark:border-gray-700 hover:border-pink-300 dark:hover:border-pink-600"
+                        ? "border-purple-500 dark:border-purple-400 shadow-2xl shadow-purple-500/50 ring-4 ring-purple-500/20"
+                        : "border-gray-200 dark:border-gray-700 hover:border-purple-300 dark:hover:border-purple-600"
                     }`}
                   >
                     {formData.envelope === envelope.id && (
-                      <div className="absolute -top-3 -right-3 w-10 h-10 bg-pink-500 rounded-full flex items-center justify-center shadow-lg animate-bounce">
+                      <div className="absolute -top-3 -right-3 w-10 h-10 bg-purple-500 rounded-full flex items-center justify-center shadow-lg animate-bounce">
                         <Check className="w-6 h-6 text-white" />
                       </div>
                     )}
@@ -345,14 +349,15 @@ const CreateLoveLetterPage = () => {
           {currentStep === 2 && (
             <div className="animate-fadeIn">
               <div className="text-center mb-8 sm:mb-12">
-                <div className="inline-flex items-center justify-center w-16 h-16 bg-rose-100 dark:bg-rose-900/30 rounded-full mb-4">
-                  <Palette className="w-8 h-8 text-rose-600 dark:text-rose-400" />
+                <div className="inline-flex items-center justify-center w-16 h-16 bg-pink-100 dark:bg-pink-900/30 rounded-full mb-4">
+                  <Palette className="w-8 h-8 text-pink-600 dark:text-pink-400" />
                 </div>
                 <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 dark:text-white mb-3">
                   Sayfa Rengini Seç
                 </h2>
                 <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-                  Mektubunun yazılacağı kağıdın rengini seç. Aşkına uygun rengi bul.
+                  Mektubunun yazılacağı kağıdın rengini seç. Bu, mektubuna özel
+                  bir atmosfer katacak.
                 </p>
               </div>
 
@@ -363,12 +368,12 @@ const CreateLoveLetterPage = () => {
                     onClick={() => handlePaperColorSelect(color.id)}
                     className={`group relative bg-white dark:bg-gray-800 rounded-2xl p-6 sm:p-8 border-2 transition-all duration-300 hover:scale-105 hover:shadow-xl ${
                       formData.paperColor === color.id
-                        ? "border-rose-500 dark:border-rose-400 shadow-2xl shadow-rose-500/50 ring-4 ring-rose-500/20"
-                        : "border-gray-200 dark:border-gray-700 hover:border-rose-300 dark:hover:border-rose-600"
+                        ? "border-pink-500 dark:border-pink-400 shadow-2xl shadow-pink-500/50 ring-4 ring-pink-500/20"
+                        : "border-gray-200 dark:border-gray-700 hover:border-pink-300 dark:hover:border-pink-600"
                     }`}
                   >
                     {formData.paperColor === color.id && (
-                      <div className="absolute -top-3 -right-3 w-10 h-10 bg-rose-500 rounded-full flex items-center justify-center shadow-lg animate-bounce">
+                      <div className="absolute -top-3 -right-3 w-10 h-10 bg-pink-500 rounded-full flex items-center justify-center shadow-lg animate-bounce">
                         <Check className="w-6 h-6 text-white" />
                       </div>
                     )}
@@ -392,7 +397,7 @@ const CreateLoveLetterPage = () => {
                         className="p-4 text-sm font-medium"
                         style={{ color: color.textColor }}
                       >
-                        Seni seviyorum
+                        Örnek yazı
                       </div>
                     </div>
 
@@ -412,39 +417,41 @@ const CreateLoveLetterPage = () => {
           {currentStep === 3 && (
             <div className="animate-fadeIn">
               <div className="text-center mb-8 sm:mb-12">
-                <div className="inline-flex items-center justify-center w-16 h-16 bg-red-100 dark:bg-red-900/30 rounded-full mb-4">
-                  <FileText className="w-8 h-8 text-red-600 dark:text-red-400" />
+                <div className="inline-flex items-center justify-center w-16 h-16 bg-green-100 dark:bg-green-900/30 rounded-full mb-4">
+                  <FileText className="w-8 h-8 text-green-600 dark:text-green-400" />
                 </div>
                 <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 dark:text-white mb-3">
                   Mektubunu Yaz
                 </h2>
                 <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-                  İçini dök, aşkını anlat. Sevgilinin kalbine dokunacak kelimeleri seç.
+                  İçini dök, duygularını paylaş. Bu mektup belirlediğin tarihte
+                  Kargoya Verilecek.
                 </p>
               </div>
 
               <div className="max-w-4xl mx-auto space-y-6">
-                {/* Zarf Üzerine Yazı */}
+                {/* Zarf Üzerine Yazı (Opsiyonel) */}
                 <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700 p-6">
                   <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                     Zarf Üzerine Yazı (Opsiyonel)
                   </label>
                   <p className="text-xs text-gray-500 dark:text-gray-400 mb-3">
-                    Zarfın üzerine el yazısı ile yazılacak romantik bir mesaj. Maksimum 50 karakter.
+                    Zarfın üzerine el yazısı ile yazılacak kısa bir mesaj.
+                    Maksimum 30 karakter.
                   </p>
                   <input
                     type="text"
-                    maxLength={50}
+                    maxLength={30}
                     value={formData.envelopeText}
                     onChange={(e) =>
                       setFormData({ ...formData, envelopeText: e.target.value })
                     }
-                    className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-pink-500 focus:border-transparent transition-all text-lg"
-                    placeholder="Örn: Seni çok seviyorum ❤️"
+                    className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all font-handwriting text-lg"
+                    placeholder="Örn: Seni seviyorum ❤️"
                     style={{ fontFamily: "'Caveat', cursive" }}
                   />
                   <div className="text-right text-xs text-gray-500 dark:text-gray-400 mt-1">
-                    {formData.envelopeText.length}/50
+                    {formData.envelopeText.length}/30
                   </div>
                 </div>
 
@@ -454,7 +461,7 @@ const CreateLoveLetterPage = () => {
                     Mektup İçeriği *
                   </label>
                   <p className="text-xs text-gray-500 dark:text-gray-400 mb-3">
-                    Kalbinden geleni yaz. Aşkını, özlemini, duygularını anlat.
+                    Kalbinden geleni yaz. Yazını şekillendirebilirsin.
                   </p>
                   <div className="prose prose-sm max-w-none dark:prose-invert">
                     <ReactQuill
@@ -486,15 +493,22 @@ const CreateLoveLetterPage = () => {
           {currentStep === 4 && (
             <div className="animate-fadeIn">
               <div className="text-center mb-8 sm:mb-12">
-                <div className="inline-flex items-center justify-center w-16 h-16 bg-purple-100 dark:bg-purple-900/30 rounded-full mb-4">
-                  <Gift className="w-8 h-8 text-purple-600 dark:text-purple-400" />
+                <div className="inline-flex items-center justify-center w-16 h-16 bg-indigo-100 dark:bg-indigo-900/30 rounded-full mb-4">
+                  <Gift className="w-8 h-8 text-indigo-600 dark:text-indigo-400" />
                 </div>
                 <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 dark:text-white mb-3">
                   Ekstra Özellikler
                 </h2>
                 <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-                  Mektubuna özel dokunuşlar ekle. Sevgilini daha çok mutlu et!
+                  Mektubuna özel dokunuşlar ekle. Bu seçenekler tamamen
+                  opsiyonel, istersen atla!
                 </p>
+                <div className="flex items-center justify-center space-x-2 mt-4 text-sm">
+                  <Clock className="w-4 h-4 text-purple-600 dark:text-purple-400" />
+                  <span className="text-gray-600 dark:text-gray-400">
+                    Bu mektup belirlediğin tarihte teslim edilecek
+                  </span>
+                </div>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 max-w-5xl mx-auto">
@@ -508,12 +522,12 @@ const CreateLoveLetterPage = () => {
                       onClick={() => handleAddonToggle(addon.id)}
                       className={`group relative bg-white dark:bg-gray-800 rounded-2xl p-6 border-2 transition-all duration-300 hover:scale-105 hover:shadow-xl ${
                         isSelected
-                          ? "border-purple-500 dark:border-purple-400 shadow-xl shadow-purple-500/30 ring-4 ring-purple-500/20"
-                          : "border-gray-200 dark:border-gray-700 hover:border-purple-300 dark:hover:border-purple-600"
+                          ? "border-indigo-500 dark:border-indigo-400 shadow-xl shadow-indigo-500/30 ring-4 ring-indigo-500/20"
+                          : "border-gray-200 dark:border-gray-700 hover:border-indigo-300 dark:hover:border-indigo-600"
                       }`}
                     >
                       {isSelected && (
-                        <div className="absolute -top-3 -right-3 w-10 h-10 bg-purple-500 rounded-full flex items-center justify-center shadow-lg animate-bounce">
+                        <div className="absolute -top-3 -right-3 w-10 h-10 bg-indigo-500 rounded-full flex items-center justify-center shadow-lg animate-bounce">
                           <Check className="w-6 h-6 text-white" />
                         </div>
                       )}
@@ -521,14 +535,14 @@ const CreateLoveLetterPage = () => {
                       <div
                         className={`w-12 h-12 rounded-xl flex items-center justify-center mb-4 ${
                           isSelected
-                            ? "bg-purple-100 dark:bg-purple-900/30"
+                            ? "bg-indigo-100 dark:bg-indigo-900/30"
                             : "bg-gray-100 dark:bg-gray-700"
                         }`}
                       >
                         <Icon
                           className={`w-6 h-6 ${
                             isSelected
-                              ? "text-purple-600 dark:text-purple-400"
+                              ? "text-indigo-600 dark:text-indigo-400"
                               : "text-gray-600 dark:text-gray-400"
                           }`}
                         />
@@ -540,8 +554,8 @@ const CreateLoveLetterPage = () => {
                       <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
                         {addon.description}
                       </p>
-                      <p className="text-lg font-bold text-purple-600 dark:text-purple-400">
-                        {addon.price}₺
+                      <p className="text-lg font-bold text-indigo-600 dark:text-indigo-400">
+                        {addon.price}
                       </p>
                     </button>
                   );
@@ -550,12 +564,12 @@ const CreateLoveLetterPage = () => {
             </div>
           )}
 
-          {/* Step 5: Teslimat Süresi */}
+          {/* Step 5: Geleceğe Gönderim Tarihi */}
           {currentStep === 5 && (
             <div className="animate-fadeIn">
               <div className="text-center mb-8 sm:mb-12">
-                <div className="inline-flex items-center justify-center w-16 h-16 bg-pink-100 dark:bg-pink-900/30 rounded-full mb-4">
-                  <Calendar className="w-8 h-8 text-pink-600 dark:text-pink-400" />
+                <div className="inline-flex items-center justify-center w-16 h-16 bg-purple-100 dark:bg-purple-900/30 rounded-full mb-4">
+                  <Calendar className="w-8 h-8 text-purple-600 dark:text-purple-400" />
                 </div>
                 <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 dark:text-white mb-3">
                   Ne Zaman Teslim Edilsin?
@@ -568,11 +582,11 @@ const CreateLoveLetterPage = () => {
               <div className="max-w-3xl mx-auto">
                 <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-gray-200 dark:border-gray-700 p-8">
                   <div className="flex items-center justify-center space-x-4 mb-8">
-                    <Send className="w-12 h-12 text-pink-600 dark:text-pink-400" />
+                    <Send className="w-12 h-12 text-purple-600 dark:text-purple-400" />
                     <div className="text-4xl font-bold text-gray-900 dark:text-white">
                       →
                     </div>
-                    <Clock className="w-12 h-12 text-pink-600 dark:text-pink-400" />
+                    <Clock className="w-12 h-12 text-purple-600 dark:text-purple-400" />
                   </div>
 
                   <div className="space-y-6">
@@ -594,7 +608,7 @@ const CreateLoveLetterPage = () => {
                           }
                           className={`py-4 px-6 rounded-xl font-semibold transition-all duration-300 ${
                             formData.deliveryOption === "1-month"
-                              ? "bg-pink-500 text-white shadow-lg scale-105"
+                              ? "bg-purple-500 text-white shadow-lg scale-105"
                               : "bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600"
                           }`}
                         >
@@ -613,7 +627,7 @@ const CreateLoveLetterPage = () => {
                           }
                           className={`py-4 px-6 rounded-xl font-semibold transition-all duration-300 ${
                             formData.deliveryOption === "2-month"
-                              ? "bg-pink-500 text-white shadow-lg scale-105"
+                              ? "bg-purple-500 text-white shadow-lg scale-105"
                               : "bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600"
                           }`}
                         >
@@ -630,7 +644,7 @@ const CreateLoveLetterPage = () => {
                           }
                           className={`py-4 px-6 rounded-xl font-semibold transition-all duration-300 ${
                             formData.deliveryOption === "custom"
-                              ? "bg-pink-500 text-white shadow-lg scale-105"
+                              ? "bg-purple-500 text-white shadow-lg scale-105"
                               : "bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600"
                           }`}
                         >
@@ -641,7 +655,7 @@ const CreateLoveLetterPage = () => {
 
                       {/* Özel Gün Sayısı veya Date Picker */}
                       {formData.deliveryOption === "custom" && (
-                        <div className="bg-pink-50 dark:bg-pink-900/20 rounded-xl p-4 border border-pink-200 dark:border-pink-800">
+                        <div className="bg-purple-50 dark:bg-purple-900/20 rounded-xl p-4 border border-purple-200 dark:border-purple-800">
                           <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
                             Gün Sayısı Gir veya Tarih Seç
                           </label>
@@ -664,7 +678,7 @@ const CreateLoveLetterPage = () => {
                                   customDeliveryDate: "",
                                 });
                               }}
-                              className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-center text-xl font-bold focus:ring-2 focus:ring-pink-500 focus:border-transparent transition-all"
+                              className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-center text-xl font-bold focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
                               placeholder="Örn: 45"
                             />
                             <p className="text-xs text-gray-500 dark:text-gray-400 mt-1 text-center">
@@ -685,15 +699,18 @@ const CreateLoveLetterPage = () => {
                             <input
                               type="date"
                               min={
-                                new Date(
-                                  Date.now() + 24 * 60 * 60 * 1000
-                                ).toISOString().split("T")[0]
+                                new Date(Date.now() + 86400000)
+                                  .toISOString()
+                                  .split("T")[0]
                               }
                               value={formData.customDeliveryDate}
                               onChange={(e) => {
                                 const selectedDate = new Date(e.target.value);
                                 const today = new Date();
-                                const diffTime = selectedDate - today;
+                                today.setHours(0, 0, 0, 0);
+
+                                const diffTime =
+                                  selectedDate.getTime() - today.getTime();
                                 const diffDays = Math.ceil(
                                   diffTime / (1000 * 60 * 60 * 24)
                                 );
@@ -704,50 +721,39 @@ const CreateLoveLetterPage = () => {
                                   futureDeliveryDays: diffDays,
                                 });
                               }}
-                              className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-pink-500 focus:border-transparent transition-all"
+                              className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
                             />
                           </div>
                         </div>
                       )}
                     </div>
 
-                    {/* Teslimat Bilgisi */}
-                    <div className="bg-pink-50 dark:bg-pink-900/20 rounded-xl p-6 border border-pink-200 dark:border-pink-800">
+                    {/* Özet Bilgi */}
+                    <div className="bg-purple-50 dark:bg-purple-900/20 rounded-xl p-4 border border-purple-200 dark:border-purple-800">
                       <div className="flex items-start space-x-3">
-                        <Calendar className="w-6 h-6 text-pink-600 dark:text-pink-400 flex-shrink-0 mt-1" />
-                        <div>
-                          <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2">
-                            Teslimat Tarihi
-                          </h3>
-                          <p className="text-gray-700 dark:text-gray-300">
+                        <Clock className="w-5 h-5 text-purple-600 dark:text-purple-400 flex-shrink-0 mt-0.5" />
+                        <div className="text-sm text-purple-900 dark:text-purple-200">
+                          <p className="font-semibold mb-1">Teslimat Zamanı:</p>
+                          <p>
                             Mektubun{" "}
-                            <span className="font-bold text-pink-600 dark:text-pink-400">
+                            <span className="font-bold">bugünden itibaren</span>{" "}
+                            <span className="font-bold text-lg">
+                              {formData.futureDeliveryDays} gün sonra
+                            </span>{" "}
+                            (
+                            <span className="font-bold">
                               {calculateDeliveryDate().toLocaleDateString(
                                 "tr-TR",
                                 {
                                   year: "numeric",
                                   month: "long",
                                   day: "numeric",
-                                  weekday: "long",
                                 }
                               )}
-                            </span>{" "}
-                            tarihinde sevgiline teslim edilecek.
-                          </p>
-                          <p className="text-sm text-gray-600 dark:text-gray-400 mt-2">
-                            Bugünden{" "}
-                            <span className="font-semibold">
-                              {formData.deliveryOption === "custom" &&
-                              formData.customDeliveryDate
-                                ? Math.ceil(
-                                    (new Date(formData.customDeliveryDate) -
-                                      new Date()) /
-                                      (1000 * 60 * 60 * 24)
-                                  )
-                                : formData.futureDeliveryDays}{" "}
-                              gün
-                            </span>{" "}
-                            sonra ({daysToMonthsText(formData.futureDeliveryDays)})
+                            </span>
+                            ) kargoya verilip teslim edilecek. Not: Hafta sonu
+                            için seçilen tarihlerde kargoya verme işlemi bir
+                            sonraki iş gününde yapılacaktır.
                           </p>
                         </div>
                       </div>
@@ -762,14 +768,14 @@ const CreateLoveLetterPage = () => {
           {currentStep === 6 && (
             <div className="animate-fadeIn">
               <div className="text-center mb-8 sm:mb-12">
-                <div className="inline-flex items-center justify-center w-16 h-16 bg-emerald-100 dark:bg-emerald-900/30 rounded-full mb-4">
-                  <User className="w-8 h-8 text-emerald-600 dark:text-emerald-400" />
+                <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-100 dark:bg-blue-900/30 rounded-full mb-4">
+                  <User className="w-8 h-8 text-blue-600 dark:text-blue-400" />
                 </div>
                 <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 dark:text-white mb-3">
-                  Sevgilinin Bilgileri
+                  Alıcı Bilgileri
                 </h2>
                 <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto mb-6">
-                  Mektubun sevgiline ulaşması için bilgileri eksiksiz doldurun.
+                  Mektubun kime gönderilecek? Bilgileri eksiksiz doldurun.
                 </p>
 
                 {/* AI Moderasyon Uyarısı */}
@@ -781,8 +787,9 @@ const CreateLoveLetterPage = () => {
                         İçerik Moderasyonu
                       </h4>
                       <p className="text-xs text-yellow-800 dark:text-yellow-300">
-                        Tüm mektuplar yapay zeka ile otomatik kontrol edilmektedir.
-                        Uygunsuz içerik tespit edilirse mektubunuz gönderilemeyecektir.
+                        Tüm mektuplar yapay zeka ile otomatik olarak kontrol
+                        edilmektedir. Uygunsuz içerik tespit edilirse mektubunuz
+                        gönderilemeyecektir. (Örnek: küfür, hakaret, tehdit vb.)
                       </p>
                     </div>
                   </div>
@@ -802,8 +809,8 @@ const CreateLoveLetterPage = () => {
                         onChange={(e) =>
                           handleRecipientChange("firstName", e.target.value)
                         }
-                        className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all"
-                        placeholder="Sevgilinin adı"
+                        className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                        placeholder="Alıcının adı"
                       />
                     </div>
 
@@ -817,8 +824,8 @@ const CreateLoveLetterPage = () => {
                         onChange={(e) =>
                           handleRecipientChange("lastName", e.target.value)
                         }
-                        className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all"
-                        placeholder="Sevgilinin soyadı"
+                        className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                        placeholder="Alıcının soyadı"
                       />
                     </div>
 
@@ -832,7 +839,7 @@ const CreateLoveLetterPage = () => {
                         onChange={(e) =>
                           handleRecipientChange("phone", e.target.value)
                         }
-                        className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all"
+                        className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
                         placeholder="05XX XXX XX XX"
                       />
                     </div>
@@ -847,7 +854,7 @@ const CreateLoveLetterPage = () => {
                         onChange={(e) =>
                           handleRecipientChange("email", e.target.value)
                         }
-                        className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all"
+                        className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
                         placeholder="ornek@email.com"
                       />
                     </div>
@@ -862,7 +869,7 @@ const CreateLoveLetterPage = () => {
                           handleRecipientChange("address", e.target.value)
                         }
                         rows={4}
-                        className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all resize-none"
+                        className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all resize-none"
                         placeholder="Mahalle, Sokak, Bina No, Daire, İlçe, İl"
                       />
                     </div>
@@ -898,8 +905,8 @@ const CreateLoveLetterPage = () => {
                 disabled={!canProceed()}
                 className="btn-primary flex items-center space-x-2 disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                <span>Ödemeye Geç</span>
-                <ArrowRight className="w-5 h-5" />
+                <span>Mektubu Oluştur</span>
+                <Check className="w-5 h-5" />
               </button>
             )}
           </div>
@@ -909,4 +916,4 @@ const CreateLoveLetterPage = () => {
   );
 };
 
-export default CreateLoveLetterPage;
+export default CreateNormalLetterPage;

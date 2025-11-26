@@ -21,6 +21,8 @@ import {
   Menu,
   X,
   Calendar,
+  Moon,
+  Sun,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
@@ -28,6 +30,17 @@ const DashboardPage = () => {
   const { user, signOut } = useAuth();
   const navigate = useNavigate();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [darkMode, setDarkMode] = useState(() => {
+    if (typeof window !== "undefined") {
+      return document.documentElement.classList.contains("dark");
+    }
+    return false;
+  });
+
+  const toggleDarkMode = () => {
+    setDarkMode(!darkMode);
+    document.documentElement.classList.toggle("dark");
+  };
 
   const handleSignOut = async () => {
     await signOut();
@@ -95,28 +108,28 @@ const DashboardPage = () => {
       title: "Sevgiliye Mektup",
       description: "Romantik bir mektup yaz",
       color: "from-pink-500 to-rose-500",
-      path: "/yeni-mektup?type=sevgili",
+      path: "/sevgiliye-mektup",
     },
     {
       icon: Shield,
       title: "Askere Mektup",
       description: "Moral ve destek gönder",
       color: "from-green-500 to-emerald-500",
-      path: "/yeni-mektup?type=asker",
+      path: "/askere-mektup",
     },
     {
       icon: LockIcon,
       title: "Cezaevine Mektup",
       description: "Umut ve güç ver",
       color: "from-orange-500 to-amber-500",
-      path: "/yeni-mektup?type=cezaevi",
+      path: "/cezaevi-mektup",
     },
     {
       icon: Mail,
       title: "Normal Mektup",
       description: "Genel amaçlı mektup",
       color: "from-blue-500 to-indigo-500",
-      path: "/yeni-mektup?type=normal",
+      path: "/normal-mektup",
     },
   ];
 
@@ -251,14 +264,17 @@ const DashboardPage = () => {
                     Duygularını sevdiklerinle paylaşmaya hazır mısın?
                   </p>
                 </div>
-                <Link
-                  to="/yeni-mektup"
-                  className="btn-primary flex items-center space-x-2 text-sm lg:text-base"
+                <button
+                  onClick={toggleDarkMode}
+                  className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+                  aria-label="Toggle dark mode"
                 >
-                  <Plus className="w-4 h-4 lg:w-5 lg:h-5" />
-                  <span className="hidden sm:inline">Yeni Mektup Yaz</span>
-                  <span className="sm:hidden">Yaz</span>
-                </Link>
+                  {darkMode ? (
+                    <Sun className="w-6 h-6 text-yellow-500" />
+                  ) : (
+                    <Moon className="w-6 h-6 text-gray-600" />
+                  )}
+                </button>
               </div>
             </div>
           </header>
@@ -358,17 +374,9 @@ const DashboardPage = () => {
                   <h3 className="text-lg sm:text-xl font-bold text-gray-900 dark:text-white mb-2">
                     Henüz mektup yazmadınız
                   </h3>
-                  <p className="text-sm sm:text-base text-gray-600 dark:text-gray-400 mb-6 max-w-md mx-auto">
-                    İlk mektubunuzu yazarak sevdiklerinize duygularınızı
-                    iletmeye başlayın.
+                  <p className="text-sm sm:text-base text-gray-600 dark:text-gray-400 max-w-md mx-auto">
+                    Yukarıdaki hızlı erişim kartlarından birini seçerek ilk mektubunuzu yazmaya başlayın.
                   </p>
-                  <Link
-                    to="/yeni-mektup"
-                    className="btn-primary inline-flex items-center text-sm sm:text-base"
-                  >
-                    <Plus className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
-                    İlk Mektubunu Yaz
-                  </Link>
                 </div>
               )}
             </div>

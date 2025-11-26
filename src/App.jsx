@@ -10,6 +10,9 @@ import ForgotPasswordPage from "./pages/ForgotPasswordPage";
 import DashboardPage from "./pages/DashboardPage";
 import CreateFutureLetterPage from "./pages/CreateFutureLetterPage";
 import CreateLoveLetterPage from "./pages/CreateLoveLetterPage";
+import CreateNormalLetterPage from "./pages/CreateNormalLetterPage";
+import CreateMilitaryLetterPage from "./pages/CreateMilitaryLetterPage";
+import CreatePrisonLetterPage from "./pages/CreatePrisonLetterPage";
 import CheckoutPage from "./pages/CheckoutPage";
 
 function App() {
@@ -27,6 +30,9 @@ function App() {
       <Route path="dashboard" element={<DashboardPage />} />
       <Route path="gelecege-mektup" element={<CreateFutureLetterPage />} />
       <Route path="sevgiliye-mektup" element={<CreateLoveLetterPage />} />
+      <Route path="normal-mektup" element={<CreateNormalLetterPage />} />
+      <Route path="askere-mektup" element={<CreateMilitaryLetterPage />} />
+      <Route path="cezaevi-mektup" element={<CreatePrisonLetterPage />} />
       <Route path="checkout" element={<CheckoutPage />} />
     </Routes>
   );
