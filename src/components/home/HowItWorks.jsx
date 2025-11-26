@@ -59,7 +59,7 @@ const HowItWorks = () => {
                 return (
                   <div key={index} className="relative">
                     {/* Step Card */}
-                    <div className="card text-center bg-white">
+                    <div className="card text-center bg-white dark:bg-gray-800">
                       {/* Number Badge */}
                       <div className="absolute -top-6 left-1/2 transform -translate-x-1/2">
                         <div
@@ -79,10 +79,10 @@ const HowItWorks = () => {
                       </div>
 
                       {/* Content */}
-                      <h3 className="text-2xl font-bold text-gray-900 mb-4">
+                      <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
                         {step.title}
                       </h3>
-                      <p className="text-gray-600">{step.description}</p>
+                      <p className="text-gray-600 dark:text-gray-300">{step.description}</p>
                     </div>
                   </div>
                 );

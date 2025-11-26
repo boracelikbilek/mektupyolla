@@ -152,11 +152,11 @@ const CreateFutureLetterPage = () => {
   const calculateDeliveryDate = () => {
     const today = new Date();
     let deliveryDate = new Date(today);
-    
+
     if (formData.deliveryOption === "custom" && formData.customDeliveryDate) {
       return new Date(formData.customDeliveryDate);
     }
-    
+
     deliveryDate.setDate(today.getDate() + formData.futureDeliveryDays);
     return deliveryDate;
   };
@@ -682,7 +682,8 @@ const CreateFutureLetterPage = () => {
                               placeholder="Örn: 45"
                             />
                             <p className="text-xs text-gray-500 dark:text-gray-400 mt-1 text-center">
-                              {daysToMonthsText(formData.futureDeliveryDays)} sonra
+                              {daysToMonthsText(formData.futureDeliveryDays)}{" "}
+                              sonra
                             </p>
                           </div>
 
@@ -697,17 +698,22 @@ const CreateFutureLetterPage = () => {
                             </label>
                             <input
                               type="date"
-                              min={new Date(Date.now() + 86400000)
-                                .toISOString()
-                                .split("T")[0]}
+                              min={
+                                new Date(Date.now() + 86400000)
+                                  .toISOString()
+                                  .split("T")[0]
+                              }
                               value={formData.customDeliveryDate}
                               onChange={(e) => {
                                 const selectedDate = new Date(e.target.value);
                                 const today = new Date();
                                 today.setHours(0, 0, 0, 0);
-                                
-                                const diffTime = selectedDate.getTime() - today.getTime();
-                                const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+                                const diffTime =
+                                  selectedDate.getTime() - today.getTime();
+                                const diffDays = Math.ceil(
+                                  diffTime / (1000 * 60 * 60 * 24)
+                                );
 
                                 setFormData({
                                   ...formData,
@@ -736,13 +742,18 @@ const CreateFutureLetterPage = () => {
                             </span>{" "}
                             (
                             <span className="font-bold">
-                              {calculateDeliveryDate().toLocaleDateString("tr-TR", {
-                                year: "numeric",
-                                month: "long",
-                                day: "numeric",
-                              })}
+                              {calculateDeliveryDate().toLocaleDateString(
+                                "tr-TR",
+                                {
+                                  year: "numeric",
+                                  month: "long",
+                                  day: "numeric",
+                                }
+                              )}
                             </span>
-                            ) kargoya verilip teslim edilecek.
+                            ) kargoya verilip teslim edilecek. Not: Hafta sonu
+                            için seçilen tarihlerde kargoya verme işlemi bir
+                            sonraki iş gününde yapılacaktır.
                           </p>
                         </div>
                       </div>

@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import SEO from "../components/SEO";
-import { Mail, Lock, Eye, EyeOff, AlertCircle, Home } from "lucide-react";
+import { Mail, Lock, Eye, EyeOff, AlertCircle, Home, Sun, Moon } from "lucide-react";
 import { useAuth } from "../contexts/AuthContext";
+import { useTheme } from "../contexts/ThemeContext";
 
 const LoginPage = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -12,6 +13,7 @@ const LoginPage = () => {
   const [loading, setLoading] = useState(false);
 
   const { signIn, signInWithGoogle } = useAuth();
+  const { theme, toggleTheme } = useTheme();
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -60,22 +62,30 @@ const LoginPage = () => {
       />
 
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary-50 via-white to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 py-12 px-4 sm:px-6 lg:px-8">
-        {/* Ana Sayfa Butonu */}
-        <Link
-          to="/"
-          className="fixed top-6 left-6 flex items-center space-x-2 text-gray-600 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors z-50"
+        {/* Dark Mode Toggle */}
+        <button
+          onClick={toggleTheme}
+          className="fixed top-6 right-6 p-3 rounded-full bg-white dark:bg-gray-800 shadow-lg hover:shadow-xl transition-all z-50"
+          aria-label="Toggle theme"
         >
-          <Home className="w-5 h-5" />
-          <span className="font-medium">Ana Sayfa</span>
-        </Link>
+          {theme === "dark" ? (
+            <Sun className="w-5 h-5 text-yellow-500" />
+          ) : (
+            <Moon className="w-5 h-5 text-gray-700" />
+          )}
+        </button>
 
         <div className="max-w-md w-full space-y-8">
-          {/* Logo */}
+          {/* Logo ve Ana Sayfa Butonu */}
           <div className="text-center">
             <Link
               to="/"
-              className="inline-flex items-center justify-center mb-6"
+              className="inline-flex flex-col items-center justify-center mb-6"
             >
+              <div className="flex items-center space-x-2 text-gray-600 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors mb-4">
+                <Home className="w-5 h-5" />
+                <span className="font-medium">Ana Sayfa</span>
+              </div>
               <img
                 src="/logo-2.png"
                 alt="MektupYolla Logo"

@@ -68,11 +68,11 @@ const LetterTypes = () => {
                   <Icon className={`w-8 h-8 ${type.iconColor}`} />
                 </div>
 
-                <h3 className="text-xl font-bold text-gray-900 mb-3">
+                <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3">
                   {type.title}
                 </h3>
 
-                <p className="text-gray-600 mb-4 min-h-[3rem]">
+                <p className="text-gray-600 dark:text-gray-300 mb-4 min-h-[3rem]">
                   {type.description}
                 </p>
 

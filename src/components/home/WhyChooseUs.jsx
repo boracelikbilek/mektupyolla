@@ -47,15 +47,15 @@ const features = [
 
 const WhyChooseUs = () => {
   return (
-    <section className="section-padding bg-gradient-to-br from-gray-50 to-gray-100">
+    <section className="section-padding bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-900">
       <div className="container-custom">
         <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-4">
             Neden
             <span className="gradient-text"> MektupYolla</span>
             <span> Seçmelisiniz?</span>
           </h2>
-          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+          <p className="text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
             Modern teknoloji ile geleneksel mektup kültürünü birleştiren benzersiz özellikler.
           </p>
         </div>
@@ -72,11 +72,11 @@ const WhyChooseUs = () => {
                   <Icon className={`w-7 h-7 ${feature.color}`} />
                 </div>
                 
-                <h3 className="text-xl font-bold text-gray-900 mb-3">
+                <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3">
                   {feature.title}
                 </h3>
                 
-                <p className="text-gray-600">
+                <p className="text-gray-600 dark:text-gray-300">
                   {feature.description}
                 </p>
               </div>
