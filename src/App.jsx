@@ -9,6 +9,8 @@ import RegisterPage from "./pages/RegisterPage";
 import ForgotPasswordPage from "./pages/ForgotPasswordPage";
 import DashboardPage from "./pages/DashboardPage";
 import CreateFutureLetterPage from "./pages/CreateFutureLetterPage";
+import CreateLoveLetterPage from "./pages/CreateLoveLetterPage";
+import CheckoutPage from "./pages/CheckoutPage";
 
 function App() {
   return (
@@ -24,6 +26,8 @@ function App() {
       <Route path="sifremi-unuttum" element={<ForgotPasswordPage />} />
       <Route path="dashboard" element={<DashboardPage />} />
       <Route path="gelecege-mektup" element={<CreateFutureLetterPage />} />
+      <Route path="sevgiliye-mektup" element={<CreateLoveLetterPage />} />
+      <Route path="checkout" element={<CheckoutPage />} />
     </Routes>
   );
 }
