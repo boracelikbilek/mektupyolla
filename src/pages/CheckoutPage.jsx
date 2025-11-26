@@ -29,12 +29,12 @@ const CheckoutPage = () => {
 
   // Fiyat listesi
   const prices = {
-    baseLetter: 50, // Temel mektup fiyatı
+    baseLetter: 399, // Temel mektup fiyatı
     addons: {
-      flower: 50,
-      sticker: 20,
+      flower: 75,
+      sticker: 75,
       perfume: 75,
-      "wax-seal": 40,
+      "wax-seal": 75,
     },
   };
 
@@ -62,13 +62,13 @@ const CheckoutPage = () => {
   // Toplam hesapla
   const calculateTotal = () => {
     let total = prices.baseLetter;
-    
+
     if (formData?.addons) {
       formData.addons.forEach((addonId) => {
         total += prices.addons[addonId] || 0;
       });
     }
-    
+
     return total;
   };
 

@@ -465,7 +465,7 @@ const CreatePrisonLetterPage = () => {
                   <p className="text-xs text-gray-500 dark:text-gray-400 mb-3">
                     Kalbinden geleni yaz. Yazını şekillendirebilirsin.
                   </p>
-                  <div className="prose prose-sm max-w-none dark:prose-invert">
+                  <div className="max-w-none">
                     <ReactQuill
                       theme="snow"
                       value={formData.letterContent}
@@ -482,8 +482,8 @@ const CreatePrisonLetterPage = () => {
                           ["clean"],
                         ],
                       }}
-                      className="bg-white dark:bg-gray-700 rounded-lg"
-                      style={{ minHeight: "300px" }}
+                      className="bg-white dark:bg-gray-700 rounded-lg w-full"
+                      style={{ minHeight: "480px" }}
                     />
                   </div>
                 </div>
@@ -800,7 +800,6 @@ const CreatePrisonLetterPage = () => {
 
               <div className="max-w-3xl mx-auto">
                 <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-gray-200 dark:border-gray-700 p-6 sm:p-8">
-                  
                   {/* Cezaevi Seçimi Uyarısı */}
                   <div className="mb-6 bg-orange-50 dark:bg-orange-900/20 border border-orange-200 dark:border-orange-800 rounded-xl p-4">
                     <div className="flex items-start space-x-3">
@@ -810,7 +809,8 @@ const CreatePrisonLetterPage = () => {
                           Cezaevi Bilgisi Gereklidir
                         </h4>
                         <p className="text-xs text-orange-800 dark:text-orange-300">
-                          Cezaevi listesi yakında API üzerinden çekilecektir. Şu an için lütfen cezaevi adını manuel olarak girin.
+                          Cezaevi listesi yakında API üzerinden çekilecektir. Şu
+                          an için lütfen cezaevi adını manuel olarak girin.
                         </p>
                       </div>
                     </div>

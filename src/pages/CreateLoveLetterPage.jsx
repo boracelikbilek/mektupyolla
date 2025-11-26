@@ -50,37 +50,43 @@ const CreateLoveLetterPage = () => {
     {
       id: "kraft",
       name: "Kraft Zarf",
-      image: "https://crdsrjcicdbgnylfjewd.supabase.co/storage/v1/object/public/envelopes/kraft.jpg",
+      image:
+        "https://crdsrjcicdbgnylfjewd.supabase.co/storage/v1/object/public/envelopes/kraft.jpg",
       description: "Doğal ve şık",
     },
     {
       id: "pink",
       name: "Pembe Zarf",
-      image: "https://crdsrjcicdbgnylfjewd.supabase.co/storage/v1/object/public/envelopes/pink.jpg",
+      image:
+        "https://crdsrjcicdbgnylfjewd.supabase.co/storage/v1/object/public/envelopes/pink.jpg",
       description: "Romantik ve sevgi dolu",
     },
     {
       id: "blue",
       name: "Mavi Zarf",
-      image: "https://crdsrjcicdbgnylfjewd.supabase.co/storage/v1/object/public/envelopes/blue.jpg",
+      image:
+        "https://crdsrjcicdbgnylfjewd.supabase.co/storage/v1/object/public/envelopes/blue.jpg",
       description: "Huzurlu ve sakin",
     },
     {
       id: "white",
       name: "Beyaz Zarf",
-      image: "https://crdsrjcicdbgnylfjewd.supabase.co/storage/v1/object/public/envelopes/white.jpg",
+      image:
+        "https://crdsrjcicdbgnylfjewd.supabase.co/storage/v1/object/public/envelopes/white.jpg",
       description: "Klasik ve zarif",
     },
     {
       id: "heart",
       name: "Kalpli Zarf",
-      image: "https://crdsrjcicdbgnylfjewd.supabase.co/storage/v1/object/public/envelopes/heart.jpg",
+      image:
+        "https://crdsrjcicdbgnylfjewd.supabase.co/storage/v1/object/public/envelopes/heart.jpg",
       description: "Aşk dolu",
     },
     {
       id: "pattern",
       name: "Desenli Zarf",
-      image: "https://crdsrjcicdbgnylfjewd.supabase.co/storage/v1/object/public/envelopes/pattern.jpg",
+      image:
+        "https://crdsrjcicdbgnylfjewd.supabase.co/storage/v1/object/public/envelopes/pattern.jpg",
       description: "Eğlenceli ve renkli",
     },
   ];
@@ -300,7 +306,8 @@ const CreateLoveLetterPage = () => {
                   Zarfını Seç
                 </h2>
                 <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-                  Sevgilinin eline geçecek zarfı özenle seç. Her zarf, aşkına özel bir dokunuş katacak.
+                  Sevgilinin eline geçecek zarfı özenle seç. Her zarf, aşkına
+                  özel bir dokunuş katacak.
                 </p>
               </div>
 
@@ -352,7 +359,8 @@ const CreateLoveLetterPage = () => {
                   Sayfa Rengini Seç
                 </h2>
                 <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-                  Mektubunun yazılacağı kağıdın rengini seç. Aşkına uygun rengi bul.
+                  Mektubunun yazılacağı kağıdın rengini seç. Aşkına uygun rengi
+                  bul.
                 </p>
               </div>
 
@@ -419,7 +427,8 @@ const CreateLoveLetterPage = () => {
                   Mektubunu Yaz
                 </h2>
                 <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-                  İçini dök, aşkını anlat. Sevgilinin kalbine dokunacak kelimeleri seç.
+                  İçini dök, aşkını anlat. Sevgilinin kalbine dokunacak
+                  kelimeleri seç.
                 </p>
               </div>
 
@@ -430,7 +439,8 @@ const CreateLoveLetterPage = () => {
                     Zarf Üzerine Yazı (Opsiyonel)
                   </label>
                   <p className="text-xs text-gray-500 dark:text-gray-400 mb-3">
-                    Zarfın üzerine el yazısı ile yazılacak romantik bir mesaj. Maksimum 50 karakter.
+                    Zarfın üzerine el yazısı ile yazılacak romantik bir mesaj.
+                    Maksimum 50 karakter.
                   </p>
                   <input
                     type="text"
@@ -456,7 +466,7 @@ const CreateLoveLetterPage = () => {
                   <p className="text-xs text-gray-500 dark:text-gray-400 mb-3">
                     Kalbinden geleni yaz. Aşkını, özlemini, duygularını anlat.
                   </p>
-                  <div className="prose prose-sm max-w-none dark:prose-invert">
+                  <div className="max-w-none">
                     <ReactQuill
                       theme="snow"
                       value={formData.letterContent}
@@ -473,8 +483,8 @@ const CreateLoveLetterPage = () => {
                           ["clean"],
                         ],
                       }}
-                      className="bg-white dark:bg-gray-700 rounded-lg"
-                      style={{ minHeight: "300px" }}
+                      className="bg-white dark:bg-gray-700 rounded-lg w-full"
+                      style={{ minHeight: "480px" }}
                     />
                   </div>
                 </div>
@@ -685,9 +695,9 @@ const CreateLoveLetterPage = () => {
                             <input
                               type="date"
                               min={
-                                new Date(
-                                  Date.now() + 24 * 60 * 60 * 1000
-                                ).toISOString().split("T")[0]
+                                new Date(Date.now() + 24 * 60 * 60 * 1000)
+                                  .toISOString()
+                                  .split("T")[0]
                               }
                               value={formData.customDeliveryDate}
                               onChange={(e) => {
@@ -747,7 +757,8 @@ const CreateLoveLetterPage = () => {
                                 : formData.futureDeliveryDays}{" "}
                               gün
                             </span>{" "}
-                            sonra ({daysToMonthsText(formData.futureDeliveryDays)})
+                            sonra (
+                            {daysToMonthsText(formData.futureDeliveryDays)})
                           </p>
                         </div>
                       </div>
@@ -781,8 +792,9 @@ const CreateLoveLetterPage = () => {
                         İçerik Moderasyonu
                       </h4>
                       <p className="text-xs text-yellow-800 dark:text-yellow-300">
-                        Tüm mektuplar yapay zeka ile otomatik kontrol edilmektedir.
-                        Uygunsuz içerik tespit edilirse mektubunuz gönderilemeyecektir.
+                        Tüm mektuplar yapay zeka ile otomatik kontrol
+                        edilmektedir. Uygunsuz içerik tespit edilirse mektubunuz
+                        gönderilemeyecektir.
                       </p>
                     </div>
                   </div>

@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Menu, X, Sun, Moon } from "lucide-react";
 import { useTheme } from "../contexts/ThemeContext";
+import { useAuth } from "../contexts/AuthContext";
 
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -9,6 +10,7 @@ const Header = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { theme, toggleTheme } = useTheme();
+  const { user } = useAuth();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -54,61 +56,37 @@ const Header = () => {
           <div className="hidden md:flex items-center justify-center flex-1 space-x-6">
             <button
               onClick={() => scrollToSection("mektup-turleri")}
-              className={`font-medium transition-colors ${
-                isScrolled
-                  ? "text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400"
-                  : "text-white hover:text-primary-100"
-              }`}
+              className={`font-medium transition-colors text-black`}
             >
               Mektup Türleri
             </button>
             <button
               onClick={() => scrollToSection("nasil-calisir")}
-              className={`font-medium transition-colors ${
-                isScrolled
-                  ? "text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400"
-                  : "text-white hover:text-primary-100"
-              }`}
+              className={`font-medium transition-colors text-black`}
             >
               Nasıl Çalışır
             </button>
             <button
               onClick={() => scrollToSection("hakkimizda")}
-              className={`font-medium transition-colors ${
-                isScrolled
-                  ? "text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400"
-                  : "text-white hover:text-primary-100"
-              }`}
+              className={`font-medium transition-colors text-black`}
             >
               Hakkımızda
             </button>
             <Link
               to="/blog"
-              className={`font-medium transition-colors ${
-                isScrolled
-                  ? "text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400"
-                  : "text-white hover:text-primary-100"
-              }`}
+              className={`font-medium transition-colors text-black`}
             >
               Blog
             </Link>
             <Link
               to="/sss"
-              className={`font-medium transition-colors ${
-                isScrolled
-                  ? "text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400"
-                  : "text-white hover:text-primary-100"
-              }`}
+              className={`font-medium transition-colors text-black`}
             >
               SSS
             </Link>
             <Link
               to="/iletisim"
-              className={`font-medium transition-colors ${
-                isScrolled
-                  ? "text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400"
-                  : "text-white hover:text-primary-100"
-              }`}
+              className={`font-medium transition-colors text-black`}
             >
               İletişim
             </Link>
@@ -116,11 +94,7 @@ const Header = () => {
             {/* Theme Toggle */}
             <button
               onClick={toggleTheme}
-              className={`p-2 rounded-lg transition-colors ${
-                isScrolled
-                  ? "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800"
-                  : "text-white hover:bg-white/10"
-              }`}
+              className={`p-2 rounded-lg transition-colors text-black`}
               aria-label="Toggle theme"
             >
               {theme === "dark" ? (
@@ -130,19 +104,18 @@ const Header = () => {
               )}
             </button>
 
-            <button onClick={() => navigate("/giris")} className="btn-primary">
-              Hemen Başla
+            <button
+              onClick={() => navigate(user ? "/dashboard" : "/giris")}
+              className="btn-primary"
+            >
+              {user ? "Panele Git" : "Hemen Başla"}
             </button>
           </div>
 
           {/* Mobile Menu Button */}
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className={`md:hidden p-2 transition-colors ${
-              isScrolled
-                ? "text-gray-700 dark:text-gray-300 hover:text-primary-600"
-                : "text-white hover:text-primary-100"
-            }`}
+            className={`md:hidden p-2 transition-colors text-black`}
           >
             {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
           </button>
@@ -154,45 +127,36 @@ const Header = () => {
             <div className="flex flex-col space-y-4 p-6">
               <button
                 onClick={() => scrollToSection("mektup-turleri")}
-                className="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 font-medium transition-colors text-left"
+                className="text-black font-medium transition-colors text-left"
               >
                 Mektup Türleri
               </button>
               <button
                 onClick={() => scrollToSection("nasil-calisir")}
-                className="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 font-medium transition-colors text-left"
+                className="text-black font-medium transition-colors text-left"
               >
                 Nasıl Çalışır
               </button>
               <button
                 onClick={() => scrollToSection("hakkimizda")}
-                className="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 font-medium transition-colors text-left"
+                className="text-black font-medium transition-colors text-left"
               >
                 Hakkımızda
               </button>
-              <Link
-                to="/blog"
-                className="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 font-medium transition-colors"
-              >
+              <Link to="/blog" className="text-black font-medium transition-colors">
                 Blog
               </Link>
-              <Link
-                to="/sss"
-                className="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 font-medium transition-colors"
-              >
+              <Link to="/sss" className="text-black font-medium transition-colors">
                 SSS
               </Link>
-              <Link
-                to="/iletisim"
-                className="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 font-medium transition-colors"
-              >
+              <Link to="/iletisim" className="text-black font-medium transition-colors">
                 İletişim
               </Link>
 
               {/* Theme Toggle */}
               <button
                 onClick={toggleTheme}
-                className="flex items-center space-x-2 text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 font-medium transition-colors text-left"
+                className="flex items-center space-x-2 text-black font-medium transition-colors text-left"
               >
                 {theme === "dark" ? (
                   <>
@@ -209,12 +173,12 @@ const Header = () => {
 
               <button
                 onClick={() => {
-                  navigate("/giris");
+                  navigate(user ? "/dashboard" : "/giris");
                   setIsOpen(false);
                 }}
                 className="btn-primary w-full"
               >
-                Hemen Başla
+                {user ? "Panele Git" : "Hemen Başla"}
               </button>
             </div>
           </div>

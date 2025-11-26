@@ -463,7 +463,7 @@ const CreateNormalLetterPage = () => {
                   <p className="text-xs text-gray-500 dark:text-gray-400 mb-3">
                     Kalbinden geleni yaz. Yazını şekillendirebilirsin.
                   </p>
-                  <div className="prose prose-sm max-w-none dark:prose-invert">
+                  <div className="max-w-none">
                     <ReactQuill
                       theme="snow"
                       value={formData.letterContent}
@@ -480,8 +480,8 @@ const CreateNormalLetterPage = () => {
                           ["clean"],
                         ],
                       }}
-                      className="bg-white dark:bg-gray-700 rounded-lg"
-                      style={{ minHeight: "300px" }}
+                      className="bg-white dark:bg-gray-700 rounded-lg w-full"
+                      style={{ minHeight: "480px" }}
                     />
                   </div>
                 </div>

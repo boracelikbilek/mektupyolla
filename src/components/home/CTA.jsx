@@ -1,8 +1,10 @@
 import { ArrowRight, Sparkles } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../contexts/AuthContext";
 
 const CTA = () => {
   const navigate = useNavigate();
+  const { user } = useAuth();
 
   return (
     <section className="section-padding bg-gradient-to-r from-primary-600 via-purple-600 to-pink-600 relative overflow-hidden">
@@ -33,10 +35,10 @@ const CTA = () => {
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <button
-              onClick={() => navigate("/giris")}
+              onClick={() => navigate(user ? "/dashboard" : "/giris")}
               className="bg-white text-primary-600 px-8 py-4 rounded-lg font-bold text-lg hover:bg-gray-100 transition-all shadow-xl hover:shadow-2xl transform hover:-translate-y-1 group"
             >
-              Ücretsiz Dene
+              {user ? "Panele Git" : "Ücretsiz Dene"}
               <ArrowRight className="inline-block ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
             </button>
             <button className="border-2 border-white text-white px-8 py-4 rounded-lg font-bold text-lg hover:bg-white/10 transition-all">

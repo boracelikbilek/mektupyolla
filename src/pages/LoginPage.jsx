@@ -1,7 +1,16 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import SEO from "../components/SEO";
-import { Mail, Lock, Eye, EyeOff, AlertCircle, Home, Sun, Moon } from "lucide-react";
+import {
+  Mail,
+  Lock,
+  Eye,
+  EyeOff,
+  AlertCircle,
+  Home,
+  Sun,
+  Moon,
+} from "lucide-react";
 import { useAuth } from "../contexts/AuthContext";
 import { useTheme } from "../contexts/ThemeContext";
 

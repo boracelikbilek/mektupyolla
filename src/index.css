@@ -63,3 +63,29 @@
     }
   }
 }
+
+/* ReactQuill dark mode toolbar and editor tweaks */
+.dark .ql-toolbar {
+  background-color: #111827; /* gray-900 */
+  border-color: #374151; /* gray-700 */
+  color: #e5e7eb; /* gray-200 */
+}
+.dark .ql-container.ql-snow {
+  background-color: #0f172a; /* slightly darker */
+  border-color: #374151;
+  color: #e5e7eb;
+}
+.dark .ql-toolbar .ql-stroke,
+.dark .ql-toolbar .ql-fill,
+.dark .ql-toolbar .ql-picker-label,
+.dark .ql-toolbar .ql-picker-item {
+  stroke: #e5e7eb;
+  fill: #e5e7eb;
+  color: #e5e7eb;
+}
+.ql-editor {
+  min-height: 420px;
+}
+.ql-container.ql-snow .ql-toolbar button {
+  color: inherit;
+}

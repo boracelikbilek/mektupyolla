@@ -375,7 +375,8 @@ const DashboardPage = () => {
                     Henüz mektup yazmadınız
                   </h3>
                   <p className="text-sm sm:text-base text-gray-600 dark:text-gray-400 max-w-md mx-auto">
-                    Yukarıdaki hızlı erişim kartlarından birini seçerek ilk mektubunuzu yazmaya başlayın.
+                    Yukarıdaki hızlı erişim kartlarından birini seçerek ilk
+                    mektubunuzu yazmaya başlayın.
                   </p>
                 </div>
               )}

@@ -1,4 +1,6 @@
 import { Heart, Shield, Lock, Mail, ArrowRight } from "lucide-react";
+import { useAuth } from "../../contexts/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 const letterTypes = [
   {
@@ -37,6 +39,17 @@ const letterTypes = [
 ];
 
 const LetterTypes = () => {
+  const { user } = useAuth();
+  const navigate = useNavigate();
+
+  const handleCardClick = () => {
+    if (user) {
+      navigate('/dashboard');
+    } else {
+      navigate('/giris');
+    }
+  };
+
   return (
     <section
       id="mektup-turleri"
@@ -77,6 +90,7 @@ const LetterTypes = () => {
                 </p>
 
                 <button
+                  onClick={handleCardClick}
                   className={`inline-flex items-center text-sm font-semibold bg-gradient-to-r ${type.color} bg-clip-text text-transparent group-hover:gap-2 transition-all`}
                 >
                   Mektup Yaz
